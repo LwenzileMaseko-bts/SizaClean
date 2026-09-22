@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Waste Collector Dashboard</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f4f6f8;
+            color: #333;
+        }
+
+        .header {
+            background-color: #1f4d3b;
+            color: white;
+            padding: 25px 40px;
+        }
+
+        .header h1 {
+            margin: 0 0 8px 0;
+        }
+
+        .header p {
+            margin: 0;
+        }
+
+        .navigation {
+            background-color: white;
+            padding: 15px 40px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .navigation a {
+            margin-right: 20px;
+            text-decoration: none;
+            color: #1f4d3b;
+            font-weight: bold;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        .page-title {
+            margin-bottom: 25px;
+        }
+
+        .report {
+            background-color: white;
+            padding: 25px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+        }
+
+        .report h2 {
+            margin-top: 0;
+            color: #1f4d3b;
+        }
+
+        .report p {
+            line-height: 1.6;
+        }
+
+        .status {
+            font-weight: bold;
+        }
+
+        .action-section {
+            margin-top: 20px;
+        }
+
+        .action-section button {
+            padding: 10px 18px;
+            border: none;
+            border-radius: 5px;
+            background-color: #1f4d3b;
+            color: white;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .action-section button:hover {
+            background-color: #163a2c;
+        }
+
+        .empty-message {
+            background-color: white;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+        }
+
+        @media (max-width: 700px) {
+            .header {
+                padding: 20px;
+            }
+
+            .navigation {
+                padding: 15px 20px;
+            }
+
+            .container {
+                margin: 20px auto;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="header">
+        <h1>Waste Collector Dashboard</h1>
+        <p>Welcome, {{ user.username }}!</p>
+    </div>
+
+    <div class="navigation">
+        <a href="{% url 'home' %}">Home</a>
+        <a href="{% url 'notifications' %}">Notifications</a>
+        <a href="{% url 'logout' %}">Logout</a>
+    </div>
+
+    <div class="container">
+
+        <h2 class="page-title">My Assigned Waste Reports</h2>
+
+        {% if reports %}
+
+            {% for report in reports %}
+
+                <div class="report">
+
+                    <h2>
+                        {{ report.get_problem_type_display }}
+                    </h2>
+
+                    <p>
+                        <strong>Location:</strong>
+                        {{ report.location }}
+                    </p>
+
+                    <p>
+                        <strong>Description:</strong>
+                        {{ report.description }}
+                    </p>
+
+                    <p>
+                        <strong>Status:</strong>
+
+                        <span class="status">
+                            {{ report.get_status_display }}
+                        </span>
+                    </p>
+
+                    {% if report.status == 'assigned' %}
+
+                        <div class="action-section">
+
+                            <form method="POST"
+                                  action="{% url 'update_report_status' report.id %}">
+
+                                {% csrf_token %}
+
+                                <input
+                                    type="hidden"
+                                    name="status"
+                                    value="in_progress"
+                                >
+
+                                <button type="submit">
+                                    Start Work
+                                </button>
+
+                            </form>
+
+                        </div>
+
+                    {% elif report.status == 'in_progress' %}
+
+                        <div class="action-section">
+
+                            <form method="POST"
+                                  action="{% url 'update_report_status' report.id %}">
+
+                                {% csrf_token %}
+
+                                <input
+                                    type="hidden"
+                                    name="status"
+                                    value="resolved"
+                                >
+
+                                <button type="submit">
+                                    Mark as Resolved
+                                </button>
+
+                            </form>
+
+                        </div>
+
+                    {% elif report.status == 'resolved' %}
+
+                        <p>
+                            <strong>This report has been resolved.</strong>
+                        </p>
+
+                    {% endif %}
+
+                    <p>
+                        <strong>Reported:</strong>
+                        {{ report.created_at }}
+                    </p>
+
+                </div>
+
+            {% endfor %}
+
+        {% else %}
+
+            <div class="empty-message">
+                <p>
+                    You currently have no reports assigned to you.
+                </p>
+            </div>
+
+        {% endif %}
+
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Report a Waste Problem | SizaClean</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background-color: #f3f6f5;
+            color: #333;
+        }
+
+        /* Header */
+        .header {
+            background-color: #1f5a47;
+            color: white;
+            padding: 30px 45px;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .brand-icon {
+            font-size: 34px;
+        }
+
+        .brand-name {
+            font-size: 30px;
+            font-weight: 700;
+        }
+
+        .header-title {
+            margin: 18px 0 5px 0;
+            font-size: 27px;
+        }
+
+        .header p {
+            margin: 0;
+            font-size: 16px;
+            opacity: 0.95;
+        }
+
+        /* Navigation */
+        .navigation {
+            background-color: white;
+            padding: 16px 45px;
+            border-bottom: 1px solid #dfe5e2;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.04);
+        }
+
+        .navigation a {
+            margin-right: 25px;
+            text-decoration: none;
+            color: #1f5a47;
+            font-weight: bold;
+        }
+
+        .navigation a:hover {
+            color: #163a2c;
+        }
+
+        /* Main container */
+        .container {
+            max-width: 850px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        /* Form card */
+        .form-card {
+            background-color: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 5px 18px rgba(0, 0, 0, 0.08);
+        }
+
+        .form-card h2 {
+            margin-top: 0;
+            color: #1f5a47;
+            font-size: 27px;
+        }
+
+        .form-intro {
+            color: #66736f;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+
+        /* Form */
+        .form-card p {
+            line-height: 1.6;
+        }
+
+        .form-card label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #24483e;
+        }
+
+        .form-card input,
+        .form-card select,
+        .form-card textarea {
+            width: 100%;
+            padding: 13px 14px;
+            border: 1px solid #ccd7d3;
+            border-radius: 7px;
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 15px;
+            background-color: white;
+            outline: none;
+        }
+
+        .form-card input:focus,
+        .form-card select:focus,
+        .form-card textarea:focus {
+            border-color: #1f5a47;
+            box-shadow: 0 0 0 3px rgba(31, 90, 71, 0.12);
+        }
+
+        .form-card textarea {
+            min-height: 140px;
+            resize: vertical;
+        }
+
+        /* Help text */
+        .helptext {
+            display: block;
+            margin-top: 6px;
+            font-size: 13px;
+            color: #71807b;
+        }
+
+        /* Errors */
+        .errorlist {
+            color: #a33a3a;
+            padding-left: 20px;
+            font-size: 14px;
+        }
+
+        /* Submit button */
+        .submit-button {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 13px 24px;
+            border: none;
+            border-radius: 7px;
+            background-color: #1f5a47;
+            color: white;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .submit-button:hover {
+            background-color: #163a2c;
+        }
+
+        /* Back link */
+        .back-link {
+            display: inline-block;
+            margin-top: 25px;
+            color: #1f5a47;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        /* Information box */
+        .info-box {
+            margin-top: 30px;
+            padding: 18px 20px;
+            background-color: #eef5f2;
+            border-left: 4px solid #1f5a47;
+            border-radius: 6px;
+            color: #486158;
+            line-height: 1.6;
+            font-size: 14px;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            padding: 25px;
+            color: #71807b;
+            font-size: 14px;
+        }
+
+        .footer strong {
+            color: #1f5a47;
+        }
+
+        /* Mobile */
+        @media (max-width: 700px) {
+
+            .header {
+                padding: 25px 20px;
+            }
+
+            .brand-name {
+                font-size: 26px;
+            }
+
+            .header-title {
+                font-size: 23px;
+            }
+
+            .navigation {
+                padding: 15px 20px;
+            }
+
+            .navigation a {
+                display: block;
+                margin-bottom: 10px;
+            }
+
+            .container {
+                margin: 25px auto;
+            }
+
+            .form-card {
+                padding: 28px 22px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Header -->
+    <div class="header">
+
+        <div class="brand">
+            <span class="brand-icon">♻️</span>
+            <span class="brand-name">SizaClean</span>
+        </div>
+
+        <h1 class="header-title">
+            Report a Waste Problem
+        </h1>
+
+        <p>
+            Help improve waste management in your community.
+        </p>
+
+    </div>
+
+
+    <!-- Navigation -->
+    <div class="navigation">
+
+        <a href="{% url 'home' %}">
+            Home
+        </a>
+
+        <a href="{% url 'my_reports' %}">
+            My Waste Reports
+        </a>
+
+        <a href="{% url 'notifications' %}">
+            Notifications
+        </a>
+
+        <a href="{% url 'logout' %}">
+            Logout
+        </a>
+
+    </div>
+
+
+    <!-- Main Content -->
+    <div class="container">
+
+        <div class="form-card">
+
+            <h2>♻️ Waste Problem Details</h2>
+
+            <p class="form-intro">
+                Please provide accurate information about the waste problem
+                you are reporting. The information you provide will help
+                waste management authorities respond appropriately.
+            </p>
+
+
+            <!-- Report Form -->
+            <form method="POST" enctype="multipart/form-data">
+
+                {% csrf_token %}
+
+                {{ form.as_p }}
+
+                <button
+                    type="submit"
+                    class="submit-button"
+                >
+                    Submit Waste Report
+                </button>
+
+            </form>
+
+
+            <!-- Information -->
+            <div class="info-box">
+                <strong>💡 Reporting tip:</strong>
+                Please provide a clear location and description of the
+                problem. If possible, include a photograph to help
+                waste management staff understand the issue.
+            </div>
+
+
+            <!-- Back -->
+            <a
+                class="back-link"
+                href="{% url 'home' %}"
+            >
+                ← Back to Home
+            </a>
+
+        </div>
+
+
+        <!-- Footer -->
+        <div class="footer">
+            <strong>♻️ SizaClean</strong>
+            <br>
+            Smart Waste Reporting &amp; Management System
+            <br><br>
+            Report. Track. Clean.
+        </div>
+
+    </div>
+
+</body>
+</html>

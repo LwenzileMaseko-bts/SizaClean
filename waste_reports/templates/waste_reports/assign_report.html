@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Assign Waste Report | SizaClean</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f4f8f5;
+            color: #1f2933;
+        }
+
+        .page {
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 850px;
+            margin: 0 auto;
+        }
+
+        /* Header */
+
+        .header {
+            background: #176b3a;
+            color: white;
+            border-radius: 16px;
+            padding: 25px 30px;
+            margin-bottom: 25px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+        }
+
+        .brand {
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .subtitle {
+            margin-top: 6px;
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .tagline {
+            margin-top: 8px;
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        /* Main card */
+
+        .card {
+            background: white;
+            border-radius: 16px;
+            padding: 32px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.07);
+            margin-bottom: 20px;
+        }
+
+        .card h1 {
+            margin-top: 0;
+            margin-bottom: 8px;
+            color: #176b3a;
+            font-size: 28px;
+        }
+
+        .card-intro {
+            color: #667085;
+            margin-bottom: 25px;
+            font-size: 14px;
+        }
+
+        /* Report information */
+
+        .report-info {
+            background: #f7faf8;
+            border: 1px solid #e2e8e4;
+            border-radius: 12px;
+            padding: 22px;
+            margin-bottom: 28px;
+        }
+
+        .report-title {
+            margin-top: 0;
+            margin-bottom: 18px;
+            color: #176b3a;
+            font-size: 21px;
+        }
+
+        .info-row {
+            margin-bottom: 13px;
+            line-height: 1.5;
+        }
+
+        .info-row:last-child {
+            margin-bottom: 0;
+        }
+
+        .label {
+            font-weight: bold;
+            color: #344054;
+        }
+
+        .status {
+            display: inline-block;
+            background: #fff4cc;
+            color: #8a6500;
+            padding: 5px 11px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        /* Assignment section */
+
+        .assignment-section {
+            border-top: 1px solid #e5e7eb;
+            padding-top: 25px;
+        }
+
+        .assignment-section h2 {
+            margin-top: 0;
+            color: #176b3a;
+            font-size: 21px;
+        }
+
+        .assignment-section p {
+            color: #667085;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #344054;
+        }
+
+        select {
+            width: 100%;
+            max-width: 500px;
+            padding: 12px 14px;
+            border: 1px solid #d0d5dd;
+            border-radius: 8px;
+            background: white;
+            font-size: 15px;
+            color: #344054;
+            cursor: pointer;
+        }
+
+        select:focus {
+            outline: none;
+            border-color: #176b3a;
+            box-shadow: 0 0 0 3px rgba(23, 107, 58, 0.10);
+        }
+
+        .assign-button {
+            border: none;
+            border-radius: 9px;
+            padding: 13px 24px;
+            background: #176b3a;
+            color: white;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.1s;
+        }
+
+        .assign-button:hover {
+            background: #12562f;
+        }
+
+        .assign-button:active {
+            transform: scale(0.98);
+        }
+
+        /* Error message */
+
+        .error {
+            background: #fff1f0;
+            border-left: 4px solid #d92d20;
+            color: #b42318;
+            padding: 13px 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+
+        /* Back button */
+
+        .back-link {
+            display: inline-block;
+            margin-top: 5px;
+            color: #176b3a;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        /* Footer */
+
+        .footer {
+            text-align: center;
+            color: #98a2b3;
+            font-size: 12px;
+            padding: 10px;
+        }
+
+        @media (max-width: 600px) {
+            .page {
+                padding: 20px 12px;
+            }
+
+            .header {
+                padding: 22px;
+            }
+
+            .card {
+                padding: 22px;
+            }
+
+            .brand {
+                font-size: 24px;
+            }
+
+            .card h1 {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="page">
+
+    <div class="container">
+
+        <!-- Header -->
+
+        <div class="header">
+            <div class="brand">♻️ SizaClean</div>
+
+            <div class="subtitle">
+                Smart Waste Reporting &amp; Management System
+            </div>
+
+            <div class="tagline">
+                Report. Track. Clean.
+            </div>
+        </div>
+
+        <!-- Main Card -->
+
+        <div class="card">
+
+            <h1>📋 Assign Waste Report</h1>
+
+            <p class="card-intro">
+                Review the waste report details and assign it to a Waste Collector.
+            </p>
+
+            <!-- Report Details -->
+
+            <div class="report-info">
+
+                <h2 class="report-title">
+                    {{ report.get_problem_type_display }}
+                </h2>
+
+                <div class="info-row">
+                    <span class="label">👤 Resident:</span>
+                    {{ report.resident.username }}
+                </div>
+
+                <div class="info-row">
+                    <span class="label">📍 Location:</span>
+                    {{ report.location }}
+                </div>
+
+                <div class="info-row">
+                    <span class="label">📝 Description:</span>
+                    {{ report.description }}
+                </div>
+
+                <div class="info-row">
+                    <span class="label">📊 Current Status:</span>
+
+                    <span class="status">
+                        {{ report.get_status_display }}
+                    </span>
+                </div>
+
+                {% if report.photo %}
+                <div class="info-row">
+                    <span class="label">📷 Photo:</span>
+
+                    <a href="{{ report.photo.url }}" target="_blank">
+                        View Report Photo
+                    </a>
+                </div>
+                {% endif %}
+
+            </div>
+
+            <!-- Assignment -->
+
+            <div class="assignment-section">
+
+                <h2>🚛 Select a Waste Collector</h2>
+
+                <p>
+                    Choose the Waste Collector responsible for handling this report.
+                </p>
+
+                {% if error %}
+                <div class="error">
+                    ⚠️ {{ error }}
+                </div>
+                {% endif %}
+
+                <form method="POST">
+
+                    {% csrf_token %}
+
+                    <div class="form-group">
+
+                        <label for="collector">
+                            Waste Collector
+                        </label>
+
+                        <select name="collector" id="collector" required>
+
+                            <option value="">
+                                -- Select a Waste Collector --
+                            </option>
+
+                            {% for collector in collectors %}
+
+                            <option value="{{ collector.id }}">
+                                {{ collector.user.username }}
+                            </option>
+
+                            {% endfor %}
+
+                        </select>
+
+                    </div>
+
+                    <button type="submit" class="assign-button">
+                        🚛 Assign Report
+                    </button>
+
+                </form>
+
+            </div>
+
+        </div>
+
+        <a href="{% url 'authority_dashboard' %}" class="back-link">
+            ← Back to Authority Dashboard
+        </a>
+
+        <div class="footer">
+            ♻️ SizaClean — Report. Track. Clean.
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>

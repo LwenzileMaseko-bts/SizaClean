@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>My Waste Reports | SizaClean</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background-color: #f3f6f5;
+            color: #333;
+        }
+
+        /* HEADER */
+
+        .header {
+            background-color: #1f5a47;
+            color: white;
+            padding: 30px 45px;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 18px;
+        }
+
+        .brand-icon {
+            font-size: 34px;
+        }
+
+        .brand-name {
+            font-size: 30px;
+            font-weight: 700;
+        }
+
+        .header h1 {
+            margin: 0 0 7px 0;
+            font-size: 27px;
+        }
+
+        .header p {
+            margin: 0;
+            font-size: 16px;
+            opacity: 0.95;
+        }
+
+        /* NAVIGATION */
+
+        .navigation {
+            background-color: white;
+            padding: 16px 45px;
+            border-bottom: 1px solid #dfe5e2;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.04);
+        }
+
+        .navigation a {
+            margin-right: 25px;
+            text-decoration: none;
+            color: #1f5a47;
+            font-weight: bold;
+        }
+
+        .navigation a:hover {
+            color: #163a2c;
+        }
+
+        /* MAIN CONTAINER */
+
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        /* INTRODUCTION */
+
+        .page-introduction {
+            background-color: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 5px 18px rgba(0, 0, 0, 0.07);
+            margin-bottom: 25px;
+        }
+
+        .page-introduction h2 {
+            margin-top: 0;
+            color: #1f5a47;
+            font-size: 26px;
+        }
+
+        .page-introduction p {
+            color: #66736f;
+            line-height: 1.6;
+            margin-bottom: 0;
+        }
+
+        /* REPORT CARD */
+
+        .report {
+            background-color: white;
+            padding: 28px;
+            margin-bottom: 20px;
+            border-radius: 12px;
+            box-shadow: 0 5px 18px rgba(0, 0, 0, 0.07);
+            border-left: 5px solid #1f5a47;
+        }
+
+        .report h3 {
+            margin-top: 0;
+            margin-bottom: 20px;
+            color: #1f5a47;
+            font-size: 22px;
+        }
+
+        .report p {
+            line-height: 1.6;
+            margin: 12px 0;
+        }
+
+        .report strong {
+            color: #24483e;
+        }
+
+        /* REPORT PHOTO */
+
+        .report-photo {
+            margin: 20px 0;
+        }
+
+        .report-photo-title {
+            display: block;
+            margin-bottom: 10px;
+            color: #24483e;
+            font-weight: 600;
+        }
+
+        .report-photo img {
+            display: block;
+            width: 100%;
+            max-width: 500px;
+            max-height: 350px;
+            object-fit: cover;
+            border-radius: 10px;
+            border: 1px solid #dfe5e2;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+        }
+
+        /* STATUS */
+
+        .status {
+            display: inline-block;
+            margin-left: 6px;
+            padding: 7px 14px;
+            border-radius: 20px;
+            background-color: #e8f1ed;
+            color: #1f5a47;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        /* STATUS GUIDE */
+
+        .status-guide {
+            background-color: #eef5f2;
+            padding: 22px;
+            margin-top: 30px;
+            border-radius: 10px;
+            border-left: 4px solid #1f5a47;
+        }
+
+        .status-guide h3 {
+            margin-top: 0;
+            color: #1f5a47;
+        }
+
+        .status-guide p {
+            margin: 8px 0;
+            color: #52645e;
+            line-height: 1.6;
+        }
+
+        /* EMPTY STATE */
+
+        .empty-message {
+            background-color: white;
+            padding: 40px 30px;
+            border-radius: 12px;
+            box-shadow: 0 5px 18px rgba(0, 0, 0, 0.07);
+            text-align: center;
+        }
+
+        .empty-icon {
+            font-size: 50px;
+            margin-bottom: 10px;
+        }
+
+        .empty-message h3 {
+            color: #1f5a47;
+            font-size: 24px;
+        }
+
+        .empty-message p {
+            color: #66736f;
+            margin-bottom: 25px;
+        }
+
+        /* BUTTON */
+
+        .submit-button {
+            display: inline-block;
+            padding: 13px 22px;
+            background-color: #1f5a47;
+            color: white;
+            text-decoration: none;
+            border-radius: 7px;
+            font-weight: bold;
+        }
+
+        .submit-button:hover {
+            background-color: #163a2c;
+        }
+
+        /* FOOTER */
+
+        .footer {
+            text-align: center;
+            margin-top: 45px;
+            padding: 25px;
+            color: #71807b;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .footer strong {
+            color: #1f5a47;
+        }
+
+        /* MOBILE */
+
+        @media (max-width: 700px) {
+
+            .header {
+                padding: 25px 20px;
+            }
+
+            .brand-name {
+                font-size: 26px;
+            }
+
+            .header h1 {
+                font-size: 23px;
+            }
+
+            .navigation {
+                padding: 15px 20px;
+            }
+
+            .navigation a {
+                display: block;
+                margin-bottom: 10px;
+            }
+
+            .container {
+                margin: 25px auto;
+            }
+
+            .page-introduction,
+            .report,
+            .empty-message {
+                padding: 24px 20px;
+            }
+
+            .status {
+                margin-left: 0;
+                margin-top: 6px;
+            }
+
+            .report-photo img {
+                max-height: 280px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- HEADER -->
+
+    <div class="header">
+
+        <div class="brand">
+
+            <span class="brand-icon">♻️</span>
+
+            <span class="brand-name">
+                SizaClean
+            </span>
+
+        </div>
+
+        <h1>
+            My Waste Reports
+        </h1>
+
+        <p>
+            Track the waste collection problems you have reported.
+        </p>
+
+    </div>
+
+
+    <!-- NAVIGATION -->
+
+    <div class="navigation">
+
+        <a href="{% url 'home' %}">
+            Home
+        </a>
+
+        <a href="{% url 'submit_report' %}">
+            📝 Submit Waste Report
+        </a>
+
+        <a href="{% url 'notifications' %}">
+            🔔 Notifications
+        </a>
+
+        <a href="{% url 'logout' %}">
+            Logout
+        </a>
+
+    </div>
+
+
+    <!-- MAIN CONTENT -->
+
+    <div class="container">
+
+
+        <!-- INTRODUCTION -->
+
+        <div class="page-introduction">
+
+            <h2>
+                📋 Your Submitted Reports
+            </h2>
+
+            <p>
+                Below you can view the waste reports you have submitted
+                and track their current status as they are handled by
+                waste management staff.
+            </p>
+
+        </div>
+
+
+        <!-- REPORTS -->
+
+        {% if reports %}
+
+            {% for report in reports %}
+
+                <div class="report">
+
+                    <h3>
+                        ♻️ {{ report.get_problem_type_display }}
+                    </h3>
+
+
+                    <p>
+
+                        <strong>📍 Location:</strong>
+
+                        {{ report.location }}
+
+                    </p>
+
+
+                    <p>
+
+                        <strong>📝 Description:</strong>
+
+                        {{ report.description }}
+
+                    </p>
+
+
+                    <!-- PHOTO -->
+
+                    {% if report.photo %}
+
+                        <div class="report-photo">
+
+                            <span class="report-photo-title">
+                                📷 Report Photo
+                            </span>
+
+                            <img
+                                src="{{ report.photo.url }}"
+                                alt="Photo uploaded for {{ report.get_problem_type_display }}"
+                            >
+
+                        </div>
+
+                    {% endif %}
+
+
+                    <p>
+
+                        <strong>📌 Status:</strong>
+
+                        <span class="status">
+
+                            {{ report.get_status_display }}
+
+                        </span>
+
+                    </p>
+
+
+                    <p>
+
+                        <strong>📅 Date Reported:</strong>
+
+                        {{ report.created_at }}
+
+                    </p>
+
+
+                    {% if report.updated_at %}
+
+                        <p>
+
+                            <strong>🔄 Last Updated:</strong>
+
+                            {{ report.updated_at }}
+
+                        </p>
+
+                    {% endif %}
+
+
+                </div>
+
+            {% endfor %}
+
+
+            <!-- STATUS GUIDE -->
+
+            <div class="status-guide">
+
+                <h3>
+                    📊 Report Status Guide
+                </h3>
+
+                <p>
+                    <strong>Pending:</strong>
+                    Your report has been submitted and is waiting
+                    to be reviewed.
+                </p>
+
+                <p>
+                    <strong>Assigned:</strong>
+                    Your report has been assigned to a waste collector.
+                </p>
+
+                <p>
+                    <strong>In Progress:</strong>
+                    A waste collector is currently working on the report.
+                </p>
+
+                <p>
+                    <strong>Resolved:</strong>
+                    The reported waste problem has been addressed.
+                </p>
+
+            </div>
+
+
+        {% else %}
+
+
+            <!-- EMPTY STATE -->
+
+            <div class="empty-message">
+
+                <div class="empty-icon">
+                    📋
+                </div>
+
+                <h3>
+                    No Waste Reports Yet
+                </h3>
+
+                <p>
+                    You have not submitted any waste reports.
+                    Once you submit a report, you will be able
+                    to track it here.
+                </p>
+
+                <a
+                    class="submit-button"
+                    href="{% url 'submit_report' %}"
+                >
+                    📝 Submit Your First Report
+                </a>
+
+            </div>
+
+
+        {% endif %}
+
+
+        <!-- FOOTER -->
+
+        <div class="footer">
+
+            <strong>♻️ SizaClean</strong>
+
+            <br>
+
+            Smart Waste Reporting &amp; Management System
+
+            <br><br>
+
+            Report. Track. Clean.
+
+        </div>
+
+
+    </div>
+
+
+</body>
+
+</html>

@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Notifications | SizaClean</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background-color: #f3f6f5;
+            color: #333;
+        }
+
+        /* HEADER */
+
+        .header {
+            background-color: #1f5a47;
+            color: white;
+            padding: 30px 45px;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 18px;
+        }
+
+        .brand-icon {
+            font-size: 34px;
+        }
+
+        .brand-name {
+            font-size: 30px;
+            font-weight: 700;
+        }
+
+        .header h1 {
+            margin: 0 0 7px 0;
+            font-size: 27px;
+        }
+
+        .header p {
+            margin: 0;
+            font-size: 16px;
+            opacity: 0.95;
+        }
+
+        /* NAVIGATION */
+
+        .navigation {
+            background-color: white;
+            padding: 16px 45px;
+            border-bottom: 1px solid #dfe5e2;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.04);
+        }
+
+        .navigation a {
+            margin-right: 25px;
+            text-decoration: none;
+            color: #1f5a47;
+            font-weight: bold;
+        }
+
+        .navigation a:hover {
+            color: #163a2c;
+        }
+
+        /* MAIN CONTAINER */
+
+        .container {
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        /* INTRODUCTION */
+
+        .introduction {
+            background-color: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 5px 18px rgba(0, 0, 0, 0.07);
+            margin-bottom: 25px;
+        }
+
+        .introduction h2 {
+            margin-top: 0;
+            color: #1f5a47;
+            font-size: 26px;
+        }
+
+        .introduction p {
+            color: #66736f;
+            line-height: 1.6;
+            margin-bottom: 0;
+        }
+
+        /* NOTIFICATION ACTIONS */
+
+        .notification-actions {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 20px;
+        }
+
+        .mark-all-button {
+            background-color: #1f5a47;
+            color: white;
+            border: none;
+            padding: 11px 18px;
+            border-radius: 7px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .mark-all-button:hover {
+            background-color: #163a2c;
+        }
+
+        /* NOTIFICATION */
+
+        .notification {
+            background-color: white;
+            padding: 25px;
+            margin-bottom: 18px;
+            border-left: 5px solid #aebbb6;
+            border-radius: 10px;
+            box-shadow: 0 5px 18px rgba(0, 0, 0, 0.07);
+        }
+
+        /* UNREAD NOTIFICATION */
+
+        .notification.unread {
+            border-left-color: #1f5a47;
+            background-color: #f8fcfa;
+        }
+
+        .notification-top {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+
+        .notification-icon {
+            font-size: 25px;
+        }
+
+        .notification-title {
+            color: #1f5a47;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .unread-label {
+            background-color: #1f5a47;
+            color: white;
+            padding: 4px 9px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: bold;
+        }
+
+        .read-label {
+            background-color: #e2e8e5;
+            color: #5f6c67;
+            padding: 4px 9px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: bold;
+        }
+
+        .notification-message {
+            font-size: 16px;
+            line-height: 1.6;
+            color: #35443f;
+            margin: 8px 0 15px 0;
+        }
+
+        .notification-date {
+            font-size: 13px;
+            color: #71807b;
+            margin: 0 0 15px 0;
+        }
+
+        /* BUTTON */
+
+        .read-button {
+            background-color: white;
+            color: #1f5a47;
+            border: 1px solid #1f5a47;
+            padding: 8px 14px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .read-button:hover {
+            background-color: #1f5a47;
+            color: white;
+        }
+
+        /* EMPTY STATE */
+
+        .empty-message {
+            background-color: white;
+            padding: 45px 30px;
+            border-radius: 12px;
+            box-shadow: 0 5px 18px rgba(0, 0, 0, 0.07);
+            text-align: center;
+        }
+
+        .empty-icon {
+            font-size: 50px;
+            margin-bottom: 10px;
+        }
+
+        .empty-message h3 {
+            color: #1f5a47;
+            font-size: 23px;
+            margin-bottom: 10px;
+        }
+
+        .empty-message p {
+            color: #66736f;
+            line-height: 1.6;
+        }
+
+        /* FOOTER */
+
+        .footer {
+            text-align: center;
+            margin-top: 45px;
+            padding: 25px;
+            color: #71807b;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .footer strong {
+            color: #1f5a47;
+        }
+
+        /* MOBILE */
+
+        @media (max-width: 700px) {
+
+            .header {
+                padding: 25px 20px;
+            }
+
+            .brand-name {
+                font-size: 26px;
+            }
+
+            .header h1 {
+                font-size: 23px;
+            }
+
+            .navigation {
+                padding: 15px 20px;
+            }
+
+            .navigation a {
+                display: block;
+                margin-bottom: 10px;
+            }
+
+            .container {
+                margin: 25px auto;
+            }
+
+            .introduction,
+            .notification,
+            .empty-message {
+                padding: 24px 20px;
+            }
+
+            .notification-actions {
+                justify-content: stretch;
+            }
+
+            .mark-all-button {
+                width: 100%;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- HEADER -->
+
+    <div class="header">
+
+        <div class="brand">
+
+            <span class="brand-icon">♻️</span>
+
+            <span class="brand-name">
+                SizaClean
+            </span>
+
+        </div>
+
+        <h1>
+            🔔 Notifications
+        </h1>
+
+        <p>
+            Stay updated about your waste reports.
+        </p>
+
+    </div>
+
+
+    <!-- NAVIGATION -->
+
+    <div class="navigation">
+
+        <a href="{% url 'home' %}">
+            Home
+        </a>
+
+        <a href="{% url 'my_reports' %}">
+            📋 My Waste Reports
+        </a>
+
+        <a href="{% url 'submit_report' %}">
+            📝 Submit Waste Report
+        </a>
+
+        <a href="{% url 'logout' %}">
+            Logout
+        </a>
+
+    </div>
+
+
+    <!-- MAIN CONTENT -->
+
+    <div class="container">
+
+
+        <!-- INTRODUCTION -->
+
+        <div class="introduction">
+
+            <h2>
+                🔔 Your Notifications
+            </h2>
+
+            <p>
+                Here you can see important updates about your waste
+                reports, including changes to their status and
+                actions taken by waste management staff.
+            </p>
+
+        </div>
+
+
+        <!-- NOTIFICATIONS -->
+
+        {% if notifications %}
+
+
+            <!-- MARK ALL AS READ -->
+
+            <div class="notification-actions">
+
+                <form method="POST"
+                      action="{% url 'mark_all_notifications_read' %}">
+
+                    {% csrf_token %}
+
+                    <button type="submit" class="mark-all-button">
+                        ✓ Mark All as Read
+                    </button>
+
+                </form>
+
+            </div>
+
+
+            {% for notification in notifications %}
+
+                <div class="notification {% if not notification.is_read %}unread{% endif %}">
+
+                    <div class="notification-top">
+
+                        <span class="notification-icon">
+                            🔔
+                        </span>
+
+                        <span class="notification-title">
+                            Waste Report Update
+                        </span>
+
+
+                        {% if not notification.is_read %}
+
+                            <span class="unread-label">
+                                UNREAD
+                            </span>
+
+                        {% else %}
+
+                            <span class="read-label">
+                                READ
+                            </span>
+
+                        {% endif %}
+
+                    </div>
+
+
+                    <p class="notification-message">
+
+                        {{ notification.message }}
+
+                    </p>
+
+
+                    <p class="notification-date">
+
+                        📅
+                        {{ notification.created_at }}
+
+                    </p>
+
+
+                    {% if not notification.is_read %}
+
+                        <form method="POST"
+                              action="{% url 'mark_notification_read' notification.id %}">
+
+                            {% csrf_token %}
+
+                            <button type="submit" class="read-button">
+                                ✓ Mark as Read
+                            </button>
+
+                        </form>
+
+                    {% endif %}
+
+                </div>
+
+            {% endfor %}
+
+
+        {% else %}
+
+
+            <!-- EMPTY STATE -->
+
+            <div class="empty-message">
+
+                <div class="empty-icon">
+                    🔔
+                </div>
+
+                <h3>
+                    No Notifications
+                </h3>
+
+                <p>
+                    You currently have no notifications.
+                    Updates about your waste reports will appear here.
+                </p>
+
+            </div>
+
+        {% endif %}
+
+
+        <!-- FOOTER -->
+
+        <div class="footer">
+
+            <strong>♻️ SizaClean</strong>
+
+            <br>
+
+            Smart Waste Reporting &amp; Management System
+
+            <br><br>
+
+            Report. Track. Clean.
+
+        </div>
+
+
+    </div>
+
+
+</body>
+
+</html>

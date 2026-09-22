@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Login | SizaClean</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f3f6f5;
+            color: #183b32;
+            min-height: 100vh;
+        }
+
+        /* Header */
+
+        .header {
+            background: #1f5a47;
+            color: white;
+            padding: 30px 45px;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 32px;
+            font-weight: 700;
+        }
+
+        .header p {
+            margin: 8px 0 0;
+            font-size: 16px;
+            opacity: 0.95;
+        }
+
+        /* Main section */
+
+        .main-container {
+            min-height: calc(100vh - 132px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 50px 20px;
+        }
+
+        /* Login card */
+
+        .login-card {
+            width: 100%;
+            max-width: 480px;
+            background: white;
+            border-radius: 12px;
+            padding: 40px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.10);
+        }
+
+        .login-card h2 {
+            margin: 0 0 10px;
+            font-size: 28px;
+            color: #164c3b;
+            text-align: center;
+        }
+
+        .login-intro {
+            text-align: center;
+            color: #66736f;
+            margin-bottom: 30px;
+            line-height: 1.5;
+        }
+
+        /* Form */
+
+        .form-group {
+            margin-bottom: 22px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #24483e;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 13px 14px;
+            border: 1px solid #ccd7d3;
+            border-radius: 7px;
+            font-size: 16px;
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .form-group input:focus {
+            border-color: #1f5a47;
+            box-shadow: 0 0 0 3px rgba(31, 90, 71, 0.12);
+        }
+
+        /* Error messages */
+
+        .error-message {
+            background: #fff1f1;
+            border: 1px solid #e0aaaa;
+            color: #8b3030;
+            padding: 12px 14px;
+            border-radius: 7px;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+
+        .errorlist {
+            list-style: none;
+            padding: 0;
+            margin: 6px 0 0;
+            color: #a33a3a;
+            font-size: 14px;
+        }
+
+        /* Login button */
+
+        .login-button {
+            width: 100%;
+            background: #1f5a47;
+            color: white;
+            border: none;
+            border-radius: 7px;
+            padding: 14px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .login-button:hover {
+            background: #164c3b;
+        }
+
+        /* Forgot password */
+
+        .forgot-password {
+            text-align: center;
+            margin-top: 16px;
+        }
+
+        .forgot-password a {
+            color: #1f5a47;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .forgot-password a:hover {
+            text-decoration: underline;
+        }
+
+        /* Register section */
+
+        .register-section {
+            text-align: center;
+            margin-top: 28px;
+            padding-top: 22px;
+            border-top: 1px solid #e1e7e4;
+            color: #66736f;
+        }
+
+        .register-section a {
+            color: #1f5a47;
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        .register-section a:hover {
+            text-decoration: underline;
+        }
+
+        /* Back home */
+
+        .back-home {
+            text-align: center;
+            margin-top: 18px;
+        }
+
+        .back-home a {
+            color: #1f5a47;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .back-home a:hover {
+            text-decoration: underline;
+        }
+
+        /* Mobile */
+
+        @media (max-width: 600px) {
+
+            .header {
+                padding: 25px 20px;
+            }
+
+            .header h1 {
+                font-size: 25px;
+            }
+
+            .header p {
+                font-size: 14px;
+            }
+
+            .main-container {
+                padding: 30px 15px;
+            }
+
+            .login-card {
+                padding: 30px 25px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <!-- Header -->
+
+    <header class="header">
+
+        <h1>♻️ SizaClean</h1>
+
+        <p>
+            Smart Waste Reporting & Management System
+        </p>
+
+    </header>
+
+
+    <!-- Login Area -->
+
+    <main class="main-container">
+
+        <div class="login-card">
+
+            <h2>Welcome Back</h2>
+
+            <p class="login-intro">
+                Sign in to access your Smart Waste Collection account.
+            </p>
+
+
+            {% if form.errors %}
+
+                <div class="error-message">
+
+                    Please check your username and password and try again.
+
+                </div>
+
+            {% endif %}
+
+
+            <form method="POST">
+
+                {% csrf_token %}
+
+
+                <!-- Username -->
+
+                <div class="form-group">
+
+                    <label for="{{ form.username.id_for_label }}">
+                        Username
+                    </label>
+
+                    {{ form.username }}
+
+                    {% if form.username.errors %}
+
+                        {{ form.username.errors }}
+
+                    {% endif %}
+
+                </div>
+
+
+                <!-- Password -->
+
+                <div class="form-group">
+
+                    <label for="{{ form.password.id_for_label }}">
+                        Password
+                    </label>
+
+                    {{ form.password }}
+
+                    {% if form.password.errors %}
+
+                        {{ form.password.errors }}
+
+                    {% endif %}
+
+                </div>
+
+
+                <!-- Login Button -->
+
+                <button type="submit" class="login-button">
+                    Login
+                </button>
+
+            </form>
+
+
+            <!-- Forgot Password -->
+
+            <div class="forgot-password">
+
+                <a href="{% url 'password_reset' %}">
+                    Forgot your password?
+                </a>
+
+            </div>
+
+
+            <!-- Register -->
+
+            <div class="register-section">
+
+                Don't have an account?
+
+                <a href="{% url 'register' %}">
+                    Register here
+                </a>
+
+            </div>
+
+
+            <!-- Back Home -->
+
+            <div class="back-home">
+
+                <a href="{% url 'home' %}">
+                    ← Back to Home
+                </a>
+
+            </div>
+
+        </div>
+
+    </main>
+
+</body>
+
+</html>
