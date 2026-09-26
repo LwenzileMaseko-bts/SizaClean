@@ -37,6 +37,7 @@ ALLOWED_HOSTS = []
 # ============================================================
 
 INSTALLED_APPS = [
+    'daphne',
 
     'django.contrib.admin',
     'django.contrib.auth',
@@ -44,6 +45,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    'channels',
 
     # SizaClean waste reporting application.
     'waste_reports',
@@ -191,3 +194,17 @@ MEDIA_ROOT = BASE_DIR / 'media'
 # ============================================================
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+ASGI_APPLICATION = 'config.asgi.application'
+
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels.layers.InMemoryChannelLayer',
+    },
+}
+
+# ============================================================
+# LOGIN REDIRECT
+# ============================================================
+
+LOGIN_URL = '/login/'

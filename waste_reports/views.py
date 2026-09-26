@@ -4,9 +4,28 @@ from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm
 
+from asgiref.sync import async_to_sync
+from channels.layers import get_channel_layer
+
 from .forms import RegistrationForm
 from .forms import WasteReportForm
 from .models import UserProfile, WasteReport, Notification
+
+
+# ---------------------------------------------------------
+# REAL-TIME NOTIFICATION HELPER
+# ---------------------------------------------------------
+
+def send_realtime_notification(user, message):
+    channel_layer = get_channel_layer()
+
+    async_to_sync(channel_layer.group_send)(
+        f"user_{user.id}",
+        {
+            "type": "notification_message",
+            "message": message,
+        }
+    )
 
 
 # ---------------------------------------------------------
@@ -119,14 +138,24 @@ def submit_report(request):
             )
 
             for authority_profile in authority_profiles:
+
+                message = (
+                    f'New waste report submitted: '
+                    f'{report.get_problem_type_display()} '
+                    f'at {report.location}.'
+                )
+
+                # Save notification in MySQL
                 Notification.objects.create(
                     recipient=authority_profile.user,
                     report=report,
-                    message=(
-                        f'New waste report submitted: '
-                        f'{report.get_problem_type_display()} '
-                        f'at {report.location}.'
-                    )
+                    message=message
+                )
+
+                # Send notification immediately through WebSocket
+                send_realtime_notification(
+                    authority_profile.user,
+                    message
                 )
 
             return redirect('home')
@@ -225,36 +254,58 @@ def update_report_status(request, report_id):
 
     new_status = request.POST.get('status')
 
-    # Enforce the correct workflow:
-    # Assigned -> In Progress
-    # In Progress -> Resolved
+    # -----------------------------------------------------
+    # ASSIGNED -> IN PROGRESS
+    # -----------------------------------------------------
 
     if report.status == 'assigned' and new_status == 'in_progress':
 
         report.status = 'in_progress'
         report.save()
 
+        message = (
+            'Your waste report has been updated to '
+            f'{report.get_status_display()}.'
+        )
+
+        # Save notification
         Notification.objects.create(
             recipient=report.resident,
             report=report,
-            message=(
-                'Your waste report has been updated to '
-                f'{report.get_status_display()}.'
-            )
+            message=message
         )
+
+        # Send real-time notification
+        send_realtime_notification(
+            report.resident,
+            message
+        )
+
+    # -----------------------------------------------------
+    # IN PROGRESS -> RESOLVED
+    # -----------------------------------------------------
 
     elif report.status == 'in_progress' and new_status == 'resolved':
 
         report.status = 'resolved'
         report.save()
 
+        message = (
+            'Your waste report has been updated to '
+            f'{report.get_status_display()}.'
+        )
+
+        # Save notification
         Notification.objects.create(
             recipient=report.resident,
             report=report,
-            message=(
-                'Your waste report has been updated to '
-                f'{report.get_status_display()}.'
-            )
+            message=message
+        )
+
+        # Send real-time notification
+        send_realtime_notification(
+            report.resident,
+            message
         )
 
     return redirect('collector_dashboard')
@@ -378,15 +429,24 @@ def assign_report(request, report_id):
 
         report.save()
 
-        # Notify the collector
+        # Create collector notification message
+        message = (
+            f'A new waste report has been assigned to you: '
+            f'{report.get_problem_type_display()} '
+            f'at {report.location}.'
+        )
+
+        # Save notification in MySQL
         Notification.objects.create(
             recipient=collector_profile.user,
             report=report,
-            message=(
-                f'A new waste report has been assigned to you: '
-                f'{report.get_problem_type_display()} '
-                f'at {report.location}.'
-            )
+            message=message
+        )
+
+        # Send notification immediately through WebSocket
+        send_realtime_notification(
+            collector_profile.user,
+            message
         )
 
         return redirect('authority_dashboard')
