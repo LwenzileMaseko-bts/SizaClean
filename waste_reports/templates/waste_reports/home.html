@@ -18,11 +18,14 @@
             color: #333;
         }
 
-        /* Header */
+        /* =========================
+           HEADER
+        ========================= */
+
         .header {
             background-color: #1f5a47;
             color: white;
-            padding: 32px 45px;
+            padding: 28px 45px;
         }
 
         .brand {
@@ -42,137 +45,258 @@
         }
 
         .header p {
-            margin: 8px 0 0 50px;
+            margin: 7px 0 0 50px;
             font-size: 16px;
             opacity: 0.95;
         }
 
-        /* Navigation */
+        /* =========================
+           NAVIGATION
+        ========================= */
+
         .navigation {
             background-color: white;
-            padding: 16px 45px;
+            padding: 14px 30px;
             border-bottom: 1px solid #dfe5e2;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.04);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+            flex: 1;
         }
 
         .navigation a {
-            margin-right: 25px;
+            display: inline-block;
+            padding: 12px 16px;
+            border-radius: 8px;
+
             text-decoration: none;
             color: #1f5a47;
             font-weight: bold;
+
+            transition: background-color 0.2s,
+                        color 0.2s,
+                        transform 0.2s;
         }
 
         .navigation a:hover {
+            background-color: #e8f1ed;
             color: #163a2c;
+            transform: translateY(-1px);
         }
 
-        /* Main container */
+        .navigation a.active {
+            background-color: #1f5a47;
+            color: white;
+        }
+
+        .navigation a.active:hover {
+            background-color: #163a2c;
+            color: white;
+        }
+
+        .logout-nav {
+            background-color: #1f5a47;
+            color: white !important;
+            padding: 12px 20px !important;
+            border-radius: 8px;
+        }
+
+        .logout-nav:hover {
+            background-color: #163a2c !important;
+            color: white !important;
+        }
+
+        /* =========================
+           MAIN CONTAINER
+        ========================= */
+
         .container {
-            max-width: 1050px;
-            margin: 40px auto;
+            max-width: 1100px;
+            margin: 35px auto;
             padding: 0 20px;
         }
 
-        /* Welcome card */
+        /* =========================
+           WELCOME CARD
+        ========================= */
+
         .welcome-card {
             background-color: white;
-            padding: 38px;
-            border-radius: 12px;
-            box-shadow: 0 5px 18px rgba(0, 0, 0, 0.08);
-            margin-bottom: 30px;
-            border-left: 5px solid #1f5a47;
+            padding: 34px 38px;
+            border-radius: 14px;
+
+            box-shadow: 0 5px 18px rgba(0, 0, 0, 0.07);
+
+            margin-bottom: 25px;
+
+            border-left: 6px solid #1f5a47;
         }
 
         .welcome-card h2 {
-            margin-top: 0;
+            margin: 0 0 12px 0;
             color: #1f5a47;
-            font-size: 27px;
+            font-size: 28px;
         }
 
         .welcome-card p {
+            margin: 0;
             line-height: 1.7;
             color: #555;
+            font-size: 16px;
         }
 
-        /* Action cards */
+        /* =========================
+           SECTION TITLE
+        ========================= */
+
+        .section-title {
+            margin: 0 0 15px 2px;
+            color: #1f5a47;
+            font-size: 21px;
+        }
+
+        /* =========================
+           ACTION CARDS
+        ========================= */
+
         .actions {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 22px;
+            gap: 20px;
         }
 
         .action-card {
             background-color: white;
-            padding: 28px;
-            border-radius: 12px;
-            box-shadow: 0 5px 18px rgba(0, 0, 0, 0.07);
-            transition: transform 0.2s, box-shadow 0.2s;
+            padding: 27px;
+
+            border-radius: 13px;
+
+            box-shadow: 0 5px 18px rgba(0, 0, 0, 0.06);
+
+            transition: transform 0.2s,
+                        box-shadow 0.2s;
         }
 
         .action-card:hover {
             transform: translateY(-3px);
-            box-shadow: 0 8px 22px rgba(0, 0, 0, 0.10);
+            box-shadow: 0 9px 24px rgba(0, 0, 0, 0.10);
         }
 
         .action-card h3 {
-            margin-top: 0;
+            margin: 0 0 12px 0;
             color: #1f5a47;
             font-size: 21px;
         }
 
         .action-card p {
+            margin: 0;
             line-height: 1.6;
             color: #555;
+            min-height: 52px;
         }
 
-        /* Buttons */
+        /* =========================
+           BUTTONS
+        ========================= */
+
         .action-button {
             display: inline-block;
-            margin-top: 12px;
-            padding: 12px 20px;
+
+            margin-top: 18px;
+
+            padding: 12px 21px;
+
             background-color: #1f5a47;
             color: white;
+
             text-decoration: none;
-            border-radius: 7px;
+
+            border-radius: 8px;
+
             font-weight: bold;
-            transition: background-color 0.2s;
+
+            transition: background-color 0.2s,
+                        transform 0.2s;
         }
 
         .action-button:hover {
             background-color: #163a2c;
+            color: white;
+            transform: translateY(-1px);
         }
 
-        /* Logout */
+        /* =========================
+           LOGOUT
+        ========================= */
+
+        .logout-section {
+            text-align: center;
+            margin-top: 28px;
+        }
+
         .logout-button {
             display: inline-block;
-            margin-top: 28px;
+
+            padding: 10px 18px;
+
             color: #1f5a47;
             font-weight: bold;
             text-decoration: none;
+
+            border: 1px solid #cbd9d4;
+            border-radius: 7px;
+
+            background-color: white;
+
+            transition: background-color 0.2s,
+                        color 0.2s;
         }
 
         .logout-button:hover {
-            text-decoration: underline;
+            background-color: #1f5a47;
+            color: white;
         }
 
-        /* Footer */
+        /* =========================
+           FOOTER
+        ========================= */
+
         .footer {
             text-align: center;
+
             margin-top: 45px;
+
             padding: 25px 20px;
+
             color: #71807b;
+
             font-size: 14px;
+
+            border-top: 1px solid #dfe5e2;
         }
 
         .footer strong {
             color: #1f5a47;
         }
 
-        /* Mobile */
+        /* =========================
+           MOBILE
+        ========================= */
+
         @media (max-width: 700px) {
 
             .header {
-                padding: 25px 20px;
+                padding: 24px 20px;
             }
 
             .brand-icon {
@@ -189,24 +313,42 @@
             }
 
             .navigation {
-                padding: 15px 20px;
+                padding: 12px 15px;
+                display: block;
+            }
+
+            .nav-links {
+                display: block;
             }
 
             .navigation a {
                 display: block;
-                margin-bottom: 10px;
+                margin-bottom: 6px;
+            }
+
+            .logout-nav {
+                margin-top: 5px;
+                text-align: center;
             }
 
             .container {
                 margin: 25px auto;
             }
 
+            .welcome-card {
+                padding: 27px;
+            }
+
+            .welcome-card h2 {
+                font-size: 24px;
+            }
+
             .actions {
                 grid-template-columns: 1fr;
             }
 
-            .welcome-card {
-                padding: 28px;
+            .action-card {
+                padding: 24px;
             }
         }
     </style>
@@ -214,11 +356,15 @@
 
 <body>
 
-    <!-- Header -->
+    <!-- =========================
+         HEADER
+    ========================= -->
+
     <div class="header">
 
         <div class="brand">
             <span class="brand-icon">♻️</span>
+
             <h1>SizaClean</h1>
         </div>
 
@@ -229,85 +375,143 @@
     </div>
 
 
-    <!-- Navigation -->
+    <!-- =========================
+         NAVIGATION
+    ========================= -->
+
     <div class="navigation">
 
         {% if user.is_authenticated %}
 
-            <a href="{% url 'home' %}">Home</a>
+            <div class="nav-links">
 
-            {% if user.userprofile.role == 'resident' %}
-
-                <a href="{% url 'submit_report' %}">
-                    Submit Waste Report
+                <a
+                    href="{% url 'home' %}"
+                    class="{% if request.resolver_match.url_name == 'home' %}active{% endif %}"
+                >
+                    🏠 Home
                 </a>
 
-                <a href="{% url 'my_reports' %}">
-                    My Waste Reports
+
+                {% if user.userprofile.role == 'resident' %}
+
+                    <a
+                        href="{% url 'submit_report' %}"
+                        class="{% if request.resolver_match.url_name == 'submit_report' %}active{% endif %}"
+                    >
+                        📝 Submit Report
+                    </a>
+
+                    <a
+                        href="{% url 'my_reports' %}"
+                        class="{% if request.resolver_match.url_name == 'my_reports' %}active{% endif %}"
+                    >
+                        📋 My Reports
+                    </a>
+
+
+                {% elif user.userprofile.role == 'collector' %}
+
+                    <a
+                        href="{% url 'collector_dashboard' %}"
+                        class="{% if request.resolver_match.url_name == 'collector_dashboard' %}active{% endif %}"
+                    >
+                        🚛 Collector Dashboard
+                    </a>
+
+
+                {% elif user.userprofile.role == 'authority' %}
+
+                    <a
+                        href="{% url 'authority_dashboard' %}"
+                        class="{% if request.resolver_match.url_name == 'authority_dashboard' %}active{% endif %}"
+                    >
+                        🏛️ Authority Dashboard
+                    </a>
+
+                {% endif %}
+
+
+                <a
+                    href="{% url 'notifications' %}"
+                    class="{% if request.resolver_match.url_name == 'notifications' %}active{% endif %}"
+                >
+                    🔔 Notifications
                 </a>
 
-            {% elif user.userprofile.role == 'collector' %}
+            </div>
 
-                <a href="{% url 'collector_dashboard' %}">
-                    Collector Dashboard
-                </a>
 
-            {% elif user.userprofile.role == 'authority' %}
-
-                <a href="{% url 'authority_dashboard' %}">
-                    Authority Dashboard
-                </a>
-
-            {% endif %}
-
-            <a href="{% url 'notifications' %}">
-                Notifications
+            <a
+                class="logout-nav"
+                href="{% url 'logout' %}"
+            >
+                Logout
             </a>
+
 
         {% else %}
 
-            <a href="{% url 'login' %}">Login</a>
-            <a href="{% url 'register' %}">Register</a>
+            <div class="nav-links">
+
+                <a href="{% url 'login' %}">
+                    🔐 Login
+                </a>
+
+                <a href="{% url 'register' %}">
+                    📝 Register
+                </a>
+
+            </div>
 
         {% endif %}
 
     </div>
 
 
-    <!-- Main Content -->
+    <!-- =========================
+         MAIN CONTENT
+    ========================= -->
+
     <div class="container">
 
         {% if user.is_authenticated %}
 
+
             <!-- Welcome -->
+
             <div class="welcome-card">
 
                 <h2>
                     Welcome to SizaClean, {{ user.username }}!
                 </h2>
 
+
                 {% if user.userprofile.role == 'resident' %}
 
                     <p>
-                        Use <strong>SizaClean</strong> to report waste collection
-                        problems in your community and track the progress of
-                        your reports from submission to resolution.
+                        Use <strong>SizaClean</strong> to report waste
+                        collection problems in your community and track
+                        the progress of your reports from submission
+                        to resolution.
                     </p>
+
 
                 {% elif user.userprofile.role == 'collector' %}
 
                     <p>
-                        Use your Collector Dashboard to view assigned waste
-                        reports, update their progress, and mark completed
-                        reports as resolved.
+                        Use your Collector Dashboard to view assigned
+                        waste reports, update their progress, and mark
+                        completed reports as resolved.
                     </p>
+
 
                 {% elif user.userprofile.role == 'authority' %}
 
                     <p>
-                        Use your Authority Dashboard to monitor waste reports,
-                        assign reports to waste collectors, filter reports,
-                        and monitor their progress.
+                        Use your Authority Dashboard to monitor waste
+                        reports, assign reports to waste collectors,
+                        filter reports, and monitor their progress.
                     </p>
 
                 {% endif %}
@@ -315,14 +519,28 @@
             </div>
 
 
+            <!-- Section Heading -->
+
+            <h3 class="section-title">
+                Quick Actions
+            </h3>
+
+
             <!-- Action Cards -->
+
             <div class="actions">
+
 
                 {% if user.userprofile.role == 'resident' %}
 
+
+                    <!-- Report Waste -->
+
                     <div class="action-card">
 
-                        <h3>♻️ Report a Waste Problem</h3>
+                        <h3>
+                            ♻️ Report a Waste Problem
+                        </h3>
 
                         <p>
                             Report missed collections, overflowing bins,
@@ -339,9 +557,13 @@
                     </div>
 
 
+                    <!-- Track Reports -->
+
                     <div class="action-card">
 
-                        <h3>📋 Track My Reports</h3>
+                        <h3>
+                            📋 Track My Reports
+                        </h3>
 
                         <p>
                             View your submitted reports and check their
@@ -358,9 +580,13 @@
                     </div>
 
 
+                    <!-- Notifications -->
+
                     <div class="action-card">
 
-                        <h3>🔔 Notifications</h3>
+                        <h3>
+                            🔔 Notifications
+                        </h3>
 
                         <p>
                             Check updates about your waste reports
@@ -377,13 +603,17 @@
                     </div>
 
 
+                    <!-- Community -->
+
                     <div class="action-card">
 
-                        <h3>🌍 Community Waste Management</h3>
+                        <h3>
+                            🌍 Community Waste Management
+                        </h3>
 
                         <p>
-                            Help improve waste management in your community
-                            by reporting problems promptly.
+                            Help improve waste management in your
+                            community by reporting problems promptly.
                         </p>
 
                     </div>
@@ -391,9 +621,14 @@
 
                 {% elif user.userprofile.role == 'collector' %}
 
+
+                    <!-- Assigned Reports -->
+
                     <div class="action-card">
 
-                        <h3>🚛 My Assigned Reports</h3>
+                        <h3>
+                            🚛 My Assigned Reports
+                        </h3>
 
                         <p>
                             View waste reports assigned to you and
@@ -410,9 +645,13 @@
                     </div>
 
 
+                    <!-- Notifications -->
+
                     <div class="action-card">
 
-                        <h3>🔔 Notifications</h3>
+                        <h3>
+                            🔔 Notifications
+                        </h3>
 
                         <p>
                             Check notifications about newly assigned
@@ -431,9 +670,14 @@
 
                 {% elif user.userprofile.role == 'authority' %}
 
+
+                    <!-- Manage Reports -->
+
                     <div class="action-card">
 
-                        <h3>🏛️ Manage Waste Reports</h3>
+                        <h3>
+                            🏛️ Manage Waste Reports
+                        </h3>
 
                         <p>
                             View, filter, assign, and monitor waste
@@ -450,9 +694,13 @@
                     </div>
 
 
+                    <!-- Notifications -->
+
                     <div class="action-card">
 
-                        <h3>🔔 Notifications</h3>
+                        <h3>
+                            🔔 Notifications
+                        </h3>
 
                         <p>
                             Check notifications about newly submitted
@@ -474,20 +722,29 @@
 
 
             <!-- Logout -->
-            <a
-                class="logout-button"
-                href="{% url 'logout' %}"
-            >
-                Logout
-            </a>
+
+            <div class="logout-section">
+
+                <a
+                    class="logout-button"
+                    href="{% url 'logout' %}"
+                >
+                    Logout
+                </a>
+
+            </div>
 
 
         {% else %}
 
+
             <!-- Logged-out Welcome -->
+
             <div class="welcome-card">
 
-                <h2>♻️ Welcome to SizaClean</h2>
+                <h2>
+                    ♻️ Welcome to SizaClean
+                </h2>
 
                 <p>
                     SizaClean is a smart waste reporting and management
@@ -495,12 +752,14 @@
                     track progress, and improve waste collection services.
                 </p>
 
+
                 <a
                     class="action-button"
                     href="{% url 'login' %}"
                 >
                     Login
                 </a>
+
 
                 <a
                     class="action-button"
@@ -514,13 +773,24 @@
         {% endif %}
 
 
-        <!-- Footer -->
+        <!-- =========================
+             FOOTER
+        ========================= -->
+
         <div class="footer">
-            <strong>♻️ SizaClean</strong>
+
+            <strong>
+                ♻️ SizaClean
+            </strong>
+
             <br>
+
             Smart Waste Reporting &amp; Management System
+
             <br><br>
+
             Report. Track. Clean.
+
         </div>
 
     </div>
