@@ -48,13 +48,14 @@ if RENDER_EXTERNAL_HOSTNAME:
 
 
 # CSRF trusted origins
-CSRF_TRUSTED_ORIGINS = []
+CSRF_TRUSTED_ORIGINS = [
+    'https://sizaclean.onrender.com',
+]
 
 if RENDER_EXTERNAL_HOSTNAME:
     CSRF_TRUSTED_ORIGINS.append(
         f'https://{RENDER_EXTERNAL_HOSTNAME}'
     )
-
 
 # ============================================================
 # APPLICATION DEFINITION
