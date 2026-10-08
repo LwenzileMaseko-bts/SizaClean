@@ -60,9 +60,9 @@ if RENDER_EXTERNAL_HOSTNAME:
 # ============================================================
 # APPLICATION DEFINITION
 # ============================================================
-
 INSTALLED_APPS = [
     'daphne',
+    'cloudinary_storage',
 
     'django.contrib.admin',
     'django.contrib.auth',
@@ -72,7 +72,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'channels',
-
+    'cloudinary',
     'waste_reports',
 ]
 
@@ -246,12 +246,11 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 STORAGES = {
     'default': {
-        'BACKEND': 'django.core.files.storage.FileSystemStorage',
+        'BACKEND': 'cloudinary_storage.storage.MediaCloudinaryStorage',
     },
 
     'staticfiles': {
-        'BACKEND':
-        'whitenoise.storage.CompressedManifestStaticFilesStorage',
+        'BACKEND': 'whitenoise.storage.CompressedManifestStaticFilesStorage',
     },
 }
 
@@ -274,9 +273,14 @@ DEFAULT_FROM_EMAIL = 'noreply@sizaclean.local'
 # MEDIA FILES
 # ============================================================
 
-MEDIA_URL = '/media/'
+# Cloudinary configuration for uploaded report photos
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': os.environ.get('CLOUDINARY_CLOUD_NAME'),
+    'API_KEY': os.environ.get('CLOUDINARY_API_KEY'),
+    'API_SECRET': os.environ.get('CLOUDINARY_API_SECRET'),
+}
 
-MEDIA_ROOT = BASE_DIR / 'media'
+MEDIA_URL = '/media/'
 
 
 # ============================================================
