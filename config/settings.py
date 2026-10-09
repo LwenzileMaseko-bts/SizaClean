@@ -246,7 +246,7 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 STORAGES = {
     'default': {
-        'BACKEND': 'cloudinary_storage.storage.MediaCloudinaryStorage',
+        'BACKEND': 'django.core.files.storage.FileSystemStorage',
     },
 
     'staticfiles': {
@@ -254,9 +254,11 @@ STORAGES = {
     },
 }
 
+# Required by django-cloudinary-storage 0.3.0
+STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
 
 # ============================================================
-# EMAIL SETTINGS
+# EMAIL SSTORAGEETTINGS
 # ============================================================
 
 # Console email backend is used during development.
@@ -281,7 +283,7 @@ CLOUDINARY_STORAGE = {
 }
 
 MEDIA_URL = '/media/'
-
+MEDIA_ROOT = BASE_DIR / 'media'
 
 # ============================================================
 # DATABASE / CHANNEL SETTINGS
