@@ -1,7 +1,14 @@
+
 <!DOCTYPE html>
 <html>
 <head>
     <title>Municipal Authority Dashboard</title>
+
+    <!-- Leaflet map styles -->
+    <link
+        rel="stylesheet"
+        href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    />
 
     <style>
         body {
@@ -169,6 +176,28 @@
             border-radius: 8px;
         }
 
+        /* Waste reports map */
+        .map-section {
+            background-color: white;
+            padding: 25px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+        }
+
+        #reports-map {
+            width: 100%;
+            height: 420px;
+            border-radius: 8px;
+            z-index: 1;
+        }
+
+        .map-note {
+            color: #555;
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+
         @media (max-width: 700px) {
             .header {
                 padding: 20px;
@@ -195,6 +224,10 @@
 
             .summary {
                 flex-direction: column;
+            }
+
+            #reports-map {
+                height: 320px;
             }
         }
     </style>
@@ -240,14 +273,12 @@
             <h2>Filter Waste Reports</h2>
 
             <form method="GET">
-
                 <div class="filter-row">
 
                     <div class="filter-group">
                         <label for="status">Status</label>
 
                         <select name="status" id="status">
-
                             <option value="">All Statuses</option>
 
                             <option value="pending"
@@ -269,16 +300,13 @@
                                 {% if status_filter == 'resolved' %}selected{% endif %}>
                                 Resolved
                             </option>
-
                         </select>
                     </div>
-
 
                     <div class="filter-group">
                         <label for="problem_type">Problem Type</label>
 
                         <select name="problem_type" id="problem_type">
-
                             <option value="">All Problem Types</option>
 
                             <option value="missed_collection"
@@ -295,10 +323,8 @@
                                 {% if problem_type_filter == 'illegal_dumping' %}selected{% endif %}>
                                 Illegal Dumping
                             </option>
-
                         </select>
                     </div>
-
 
                     <div class="filter-group">
                         <label for="location">Location</label>
@@ -312,32 +338,37 @@
                         >
                     </div>
 
-
                     <div class="filter-group">
-
-                        <button type="submit">
-                            Apply Filters
-                        </button>
-
+                        <button type="submit">Apply Filters</button>
                     </div>
 
                     <div class="filter-group">
-
                         <a
                             class="clear-link"
                             href="{% url 'authority_dashboard' %}"
                         >
                             Clear Filters
                         </a>
-
                     </div>
 
                 </div>
-
             </form>
 
         </div>
 
+        <!-- Waste reports map -->
+        <div class="map-section">
+            <h2>Waste Reports Map</h2>
+
+            <p class="map-note">
+                View reported waste problems by location.
+                Click a marker to see the report details.
+            </p>
+
+            <div id="reports-map"></div>
+
+            <p id="map-message" class="map-note"></p>
+        </div>
 
         <h2>All Waste Reports</h2>
 
@@ -368,7 +399,6 @@
 
                     <p>
                         <strong>Status:</strong>
-
                         <span class="status">
                             {{ report.get_status_display }}
                         </span>
@@ -385,14 +415,12 @@
                     </p>
 
                     {% if not report.assigned_collector %}
-
                         <a
                             class="assign-link"
                             href="{% url 'assign_report' report.id %}"
                         >
                             Assign Collector
                         </a>
-
                     {% endif %}
 
                     <p>
@@ -414,5 +442,109 @@
 
     </div>
 
+    <!-- Leaflet map library -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+    <!-- Django safely provides the map data as JSON -->
+    {{ reports_map_data|json_script:"reports-data" }}
+
+    <script>
+        // Start with a broad view covering southern Africa.
+        const reportsMap = L.map('reports-map').setView(
+            [-15.4, 28.3],
+            5
+        );
+
+        // Use OpenStreetMap tiles.
+        L.tileLayer(
+           'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+           {
+              maxZoom: 19,
+              attribution: '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap contributors</a>',
+              referrerPolicy: 'strict-origin-when-cross-origin'
+           }
+        ).addTo(reportsMap);
+
+        const mapMessage = document.getElementById('map-message');
+        const markers = [];
+
+        // Read report data supplied by Django.
+        const reports = JSON.parse(
+            document.getElementById('reports-data').textContent
+        );
+
+        // Safely display report details in marker popups.
+        function escapeHtml(value) {
+            return String(value ?? '').replace(/[&<>"']/g, function(character) {
+                return {
+                    '&': '&amp;',
+                    '<': '&lt;',
+                    '>': '&gt;',
+                    '"': '&quot;',
+                    "'": '&#39;'
+                }[character];
+            });
+        }
+
+        // Create one marker for every report with saved coordinates.
+        reports.forEach(function(report) {
+            const latitude = Number(report.latitude);
+            const longitude = Number(report.longitude);
+
+            // Ignore missing or invalid coordinates.
+            if (
+                !Number.isFinite(latitude) ||
+                !Number.isFinite(longitude) ||
+                latitude < -90 ||
+                latitude > 90 ||
+                longitude < -180 ||
+                longitude > 180
+            ) {
+                return;
+            }
+
+            const marker = L.marker([
+                latitude,
+                longitude
+            ]).addTo(reportsMap);
+
+            const popupContent =
+                '<strong>' + escapeHtml(report.problem) + '</strong>' +
+                '<br><strong>Location:</strong> ' +
+                escapeHtml(report.location) +
+                '<br><strong>Status:</strong> ' +
+                escapeHtml(report.status) +
+                '<br><strong>Description:</strong> ' +
+                escapeHtml(report.description);
+
+            marker.bindPopup(popupContent);
+
+            markers.push(marker);
+        });
+
+        // Zoom to the report markers when any are available.
+        if (markers.length > 0) {
+            const markerGroup = L.featureGroup(markers);
+
+            reportsMap.fitBounds(markerGroup.getBounds(), {
+                padding: [30, 30],
+                maxZoom: 15
+            });
+
+            mapMessage.textContent =
+                markers.length +
+                ' report location(s) displayed on the map.';
+        } else {
+            mapMessage.textContent =
+                'No reports with saved coordinates are available to display yet.';
+        }
+
+        // Ensure the map renders correctly after page loading.
+        window.addEventListener('load', function() {
+            reportsMap.invalidateSize();
+        });
+    </script>
+
 </body>
 </html>
+

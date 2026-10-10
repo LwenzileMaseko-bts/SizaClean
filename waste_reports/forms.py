@@ -25,6 +25,8 @@ class WasteReportForm(forms.ModelForm):
             'problem_type',
             'description',
             'location',
+            'latitude',
+            'longitude',
             'photo',
         ]
 
@@ -37,4 +39,7 @@ class WasteReportForm(forms.ModelForm):
             'location': forms.TextInput(attrs={
                 'placeholder': 'Enter the location of the problem'
             }),
+
+            'latitude': forms.HiddenInput(),
+            'longitude': forms.HiddenInput(),
         }

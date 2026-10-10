@@ -9,142 +9,138 @@
 
     <title>My Waste Reports | SizaClean</title>
 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700;800&family=Figtree:wght@400;600&display=swap" rel="stylesheet">
+
     <style>
 
-        * {
-            box-sizing: border-box;
+        :root {
+            --ink: #10231c;
+            --forest: #14392e;
+            --hivis: #d4ee3c;
+            --mist: #eef2ef;
+            --line: #d5ddd8;
+            --muted: #4d5f57;
         }
+
+        * { box-sizing: border-box; margin: 0; }
 
         body {
-            margin: 0;
-            font-family: Arial, Helvetica, sans-serif;
-            background-color: #f3f6f5;
-            color: #333;
+            font-family: "Figtree", system-ui, sans-serif;
+            background: var(--mist);
+            color: var(--ink);
+            line-height: 1.5;
         }
 
-        /* HEADER */
+        a { color: inherit; text-decoration: none; }
+        a:focus-visible, button:focus-visible { outline: 3px solid var(--forest); outline-offset: 3px; }
 
-        .header {
-            background-color: #1f5a47;
-            color: white;
-            padding: 30px 45px;
+        /* TOP BAR */
+
+        .bar { background: var(--forest); color: #fff; }
+
+        .bar-inner {
+            max-width: 1080px; margin: 0 auto; padding: 14px 24px;
+            display: flex; align-items: center; gap: 24px 32px; flex-wrap: wrap;
         }
 
-        .brand {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 18px;
+        .brand { display: flex; align-items: center; gap: 12px; margin-right: auto; }
+        .brand svg { width: 34px; height: 34px; flex-shrink: 0; }
+
+        .brand b {
+            font-family: "Bricolage Grotesque", sans-serif;
+            font-size: 1.35rem; font-weight: 800; letter-spacing: -.01em;
+            display: block; line-height: 1.1;
         }
 
-        .brand-icon {
-            font-size: 34px;
+        .brand span { font-size: .78rem; color: #a9c2b6; }
+
+        nav { display: flex; gap: 4px; flex-wrap: wrap; }
+
+        nav a {
+            padding: 8px 14px; border-radius: 8px;
+            font-weight: 600; font-size: .95rem; color: #cfe0d7;
         }
 
-        .brand-name {
-            font-size: 30px;
-            font-weight: 700;
+        nav a:hover { background: rgba(255,255,255,.1); color: #fff; }
+        nav a[aria-current="page"] { background: var(--hivis); color: var(--ink); }
+
+        .logout {
+            font-weight: 600; font-size: .95rem; padding: 8px 14px;
+            border: 1.5px solid #4c7365; border-radius: 8px; color: #cfe0d7;
         }
 
-        .header h1 {
-            margin: 0 0 7px 0;
-            font-size: 27px;
+        .logout:hover { border-color: #fff; color: #fff; }
+
+        /* PAGE */
+
+        .container { max-width: 1080px; margin: 0 auto; padding: 40px 24px 24px; }
+        .content { max-width: 780px; }
+
+        .page-head { margin-bottom: 28px; }
+
+        .page-head h1 {
+            font-family: "Bricolage Grotesque", sans-serif;
+            font-size: clamp(2rem, 4.5vw, 2.8rem); font-weight: 800;
+            letter-spacing: -.025em; line-height: 1.1; margin-bottom: 10px;
         }
 
-        .header p {
-            margin: 0;
-            font-size: 16px;
-            opacity: 0.95;
-        }
-
-        /* NAVIGATION */
-
-        .navigation {
-            background-color: white;
-            padding: 16px 45px;
-            border-bottom: 1px solid #dfe5e2;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.04);
-        }
-
-        .navigation a {
-            margin-right: 25px;
-            text-decoration: none;
-            color: #1f5a47;
-            font-weight: bold;
-        }
-
-        .navigation a:hover {
-            color: #163a2c;
-        }
-
-        /* MAIN CONTAINER */
-
-        .container {
-            max-width: 1000px;
-            margin: 40px auto;
-            padding: 0 20px;
-        }
-
-        /* INTRODUCTION */
-
-        .page-introduction {
-            background-color: white;
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 5px 18px rgba(0, 0, 0, 0.07);
-            margin-bottom: 25px;
-        }
-
-        .page-introduction h2 {
-            margin-top: 0;
-            color: #1f5a47;
-            font-size: 26px;
-        }
-
-        .page-introduction p {
-            color: #66736f;
-            line-height: 1.6;
-            margin-bottom: 0;
-        }
+        .page-head p { color: var(--muted); font-size: 1.05rem; }
 
         /* REPORT CARD */
 
         .report {
-            background-color: white;
-            padding: 28px;
-            margin-bottom: 20px;
-            border-radius: 12px;
-            box-shadow: 0 5px 18px rgba(0, 0, 0, 0.07);
-            border-left: 5px solid #1f5a47;
+            background: #fff;
+            border: 1.5px solid var(--line);
+            border-left: 6px solid var(--line);
+            padding: 24px 26px;
+            margin-bottom: 16px;
+            border-radius: 16px;
         }
 
-        .report h3 {
-            margin-top: 0;
-            margin-bottom: 20px;
-            color: #1f5a47;
-            font-size: 22px;
+        .report-pending { border-left-color: #aebbb6; }
+        .report-assigned { border-left-color: #e0a526; }
+        .report-in_progress { border-left-color: #a9c61b; }
+        .report-resolved { border-left-color: #9bb8aa; }
+
+        .report-head {
+            display: flex; align-items: center; justify-content: space-between;
+            gap: 12px; flex-wrap: wrap; margin-bottom: 14px;
         }
 
-        .report p {
-            line-height: 1.6;
-            margin: 12px 0;
+        .report-head h2 {
+            font-family: "Bricolage Grotesque", sans-serif;
+            font-size: 1.35rem; font-weight: 700; letter-spacing: -.01em;
         }
 
-        .report strong {
-            color: #24483e;
+        /* STATUS BADGE */
+
+        .badge {
+            display: inline-block;
+            font-size: .82rem; font-weight: 600;
+            padding: 4px 12px; border-radius: 999px;
+            white-space: nowrap;
         }
+
+        .badge-pending { background: #e6ebe8; color: #3d4f47; }
+        .badge-assigned { background: #fdecc8; color: #6b4300; }
+        .badge-in_progress { background: var(--hivis); color: var(--ink); }
+        .badge-resolved { background: #dfeee6; color: var(--forest); }
+
+        .details { display: grid; gap: 10px; }
+        .details div { display: grid; grid-template-columns: 120px 1fr; gap: 12px; }
+        .details dt { color: var(--muted); font-size: .92rem; }
+        .details dd { margin: 0; overflow-wrap: anywhere; }
 
         /* REPORT PHOTO */
 
-        .report-photo {
-            margin: 20px 0;
-        }
+        .report-photo { margin-top: 18px; }
 
         .report-photo-title {
             display: block;
-            margin-bottom: 10px;
-            color: #24483e;
-            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--muted);
+            font-size: .92rem;
         }
 
         .report-photo img {
@@ -153,68 +149,64 @@
             max-width: 500px;
             max-height: 350px;
             object-fit: cover;
-            border-radius: 10px;
-            border: 1px solid #dfe5e2;
-            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
-        }
-
-        /* STATUS */
-
-        .status {
-            display: inline-block;
-            margin-left: 6px;
-            padding: 7px 14px;
-            border-radius: 20px;
-            background-color: #e8f1ed;
-            color: #1f5a47;
-            font-weight: bold;
-            font-size: 14px;
+            border-radius: 12px;
+            border: 1.5px solid var(--line);
         }
 
         /* STATUS GUIDE */
 
         .status-guide {
-            background-color: #eef5f2;
-            padding: 22px;
-            margin-top: 30px;
-            border-radius: 10px;
-            border-left: 4px solid #1f5a47;
+            background: #fff;
+            border: 1.5px solid var(--line);
+            padding: 24px 26px;
+            margin-top: 28px;
+            border-radius: 16px;
         }
 
-        .status-guide h3 {
-            margin-top: 0;
-            color: #1f5a47;
+        .status-guide h2 {
+            font-family: "Bricolage Grotesque", sans-serif;
+            font-size: 1.25rem; font-weight: 700;
+            margin-bottom: 14px;
         }
 
         .status-guide p {
-            margin: 8px 0;
-            color: #52645e;
-            line-height: 1.6;
+            display: grid;
+            grid-template-columns: 110px 1fr;
+            gap: 12px;
+            align-items: start;
+            margin: 10px 0;
+            color: var(--muted);
         }
+
+        .status-guide .badge { justify-self: start; }
 
         /* EMPTY STATE */
 
         .empty-message {
-            background-color: white;
-            padding: 40px 30px;
-            border-radius: 12px;
-            box-shadow: 0 5px 18px rgba(0, 0, 0, 0.07);
+            background: #fff;
+            border: 1.5px solid var(--line);
+            padding: 44px 30px;
+            border-radius: 20px;
             text-align: center;
         }
 
         .empty-icon {
-            font-size: 50px;
-            margin-bottom: 10px;
+            width: 56px; height: 56px; border-radius: 16px;
+            display: grid; place-items: center; margin: 0 auto 16px;
+            background: var(--mist); color: var(--forest);
         }
 
-        .empty-message h3 {
-            color: #1f5a47;
-            font-size: 24px;
+        .empty-icon svg { width: 28px; height: 28px; }
+
+        .empty-message h2 {
+            font-family: "Bricolage Grotesque", sans-serif;
+            font-size: 1.4rem; font-weight: 700; margin-bottom: 8px;
         }
 
         .empty-message p {
-            color: #66736f;
-            margin-bottom: 25px;
+            color: var(--muted);
+            max-width: 42ch;
+            margin: 0 auto 24px;
         }
 
         /* BUTTON */
@@ -222,76 +214,43 @@
         .submit-button {
             display: inline-block;
             padding: 13px 22px;
-            background-color: #1f5a47;
-            color: white;
-            text-decoration: none;
-            border-radius: 7px;
-            font-weight: bold;
+            background: var(--forest);
+            color: #fff;
+            border-radius: 12px;
+            font-weight: 600;
+            transition: transform 0.15s;
         }
 
-        .submit-button:hover {
-            background-color: #163a2c;
-        }
+        .submit-button:hover { transform: translateY(-2px); }
 
         /* FOOTER */
 
         .footer {
-            text-align: center;
-            margin-top: 45px;
-            padding: 25px;
-            color: #71807b;
-            font-size: 14px;
-            line-height: 1.6;
+            max-width: 1080px; margin: 0 auto; padding: 32px 24px 48px;
+            color: #6b7d75; font-size: .9rem;
         }
 
         .footer strong {
-            color: #1f5a47;
+            color: var(--forest);
+            font-family: "Bricolage Grotesque", sans-serif; font-size: 1.05rem;
         }
 
         /* MOBILE */
 
         @media (max-width: 700px) {
 
-            .header {
-                padding: 25px 20px;
-            }
+            .container { padding-top: 28px; }
 
-            .brand-name {
-                font-size: 26px;
-            }
+            .report, .status-guide { padding: 20px; }
 
-            .header h1 {
-                font-size: 23px;
-            }
+            .details div { grid-template-columns: 1fr; gap: 0; }
 
-            .navigation {
-                padding: 15px 20px;
-            }
+            .status-guide p { grid-template-columns: 1fr; gap: 4px; }
 
-            .navigation a {
-                display: block;
-                margin-bottom: 10px;
-            }
+        }
 
-            .container {
-                margin: 25px auto;
-            }
-
-            .page-introduction,
-            .report,
-            .empty-message {
-                padding: 24px 20px;
-            }
-
-            .status {
-                margin-left: 0;
-                margin-top: 6px;
-            }
-
-            .report-photo img {
-                max-height: 280px;
-            }
-
+        @media (prefers-reduced-motion: reduce) {
+            .submit-button { transition: none; }
         }
 
     </style>
@@ -302,251 +261,242 @@
 <body>
 
 
-    <!-- HEADER -->
+    <!-- TOP BAR -->
 
-    <div class="header">
+    <header class="bar">
 
-        <div class="brand">
+        <div class="bar-inner">
 
-            <span class="brand-icon">♻️</span>
+            <a class="brand" href="{% url 'home' %}">
 
-            <span class="brand-name">
-                SizaClean
-            </span>
+                <svg viewBox="0 0 40 40" fill="none" stroke="#d4ee3c" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M14 9l5-5 6 9M26 7l9 14-8 1M32 31l-6 5-9-3M13 36L5 22l8-1M8 14l6-5M30 28l2 4"/>
+                </svg>
+
+                <div>
+                    <b>SizaClean</b>
+                    <span>Smart Waste Reporting &amp; Management System</span>
+                </div>
+
+            </a>
+
+            <nav aria-label="Main">
+
+                <a href="{% url 'home' %}">
+                    Home
+                </a>
+
+                <a href="{% url 'my_reports' %}" aria-current="page">
+                    My Waste Reports
+                </a>
+
+                <a href="{% url 'submit_report' %}">
+                    Submit Waste Report
+                </a>
+
+                <a href="{% url 'notifications' %}">
+                    Notifications
+                </a>
+
+            </nav>
+
+            <a class="logout" href="{% url 'logout' %}">
+                Logout
+            </a>
 
         </div>
 
-        <h1>
-            My Waste Reports
-        </h1>
-
-        <p>
-            Track the waste collection problems you have reported.
-        </p>
-
-    </div>
-
-
-    <!-- NAVIGATION -->
-
-    <div class="navigation">
-
-        <a href="{% url 'home' %}">
-            Home
-        </a>
-
-        <a href="{% url 'submit_report' %}">
-            📝 Submit Waste Report
-        </a>
-
-        <a href="{% url 'notifications' %}">
-            🔔 Notifications
-        </a>
-
-        <a href="{% url 'logout' %}">
-            Logout
-        </a>
-
-    </div>
+    </header>
 
 
     <!-- MAIN CONTENT -->
 
     <div class="container">
 
-
-        <!-- INTRODUCTION -->
-
-        <div class="page-introduction">
-
-            <h2>
-                📋 Your Submitted Reports
-            </h2>
-
-            <p>
-                Below you can view the waste reports you have submitted
-                and track their current status as they are handled by
-                waste management staff.
-            </p>
-
-        </div>
+        <div class="content">
 
 
-        <!-- REPORTS -->
+            <!-- INTRODUCTION -->
 
-        {% if reports %}
+            <div class="page-head">
 
-            {% for report in reports %}
+                <h1>
+                    My Waste Reports
+                </h1>
 
-                <div class="report">
+                <p>
+                    Below you can view the waste reports you have submitted
+                    and track their current status as they are handled by
+                    waste management staff.
+                </p>
 
-                    <h3>
-                        ♻️ {{ report.get_problem_type_display }}
-                    </h3>
-
-
-                    <p>
-
-                        <strong>📍 Location:</strong>
-
-                        {{ report.location }}
-
-                    </p>
+            </div>
 
 
-                    <p>
+            <!-- REPORTS -->
 
-                        <strong>📝 Description:</strong>
+            {% if reports %}
 
-                        {{ report.description }}
+                {% for report in reports %}
 
-                    </p>
+                    <article class="report report-{{ report.status }}">
 
+                        <div class="report-head">
 
-                    <!-- PHOTO -->
+                            <h2>
+                                {{ report.get_problem_type_display }}
+                            </h2>
 
-                    {% if report.photo %}
+                            <span class="status badge badge-{{ report.status }}">
 
-                        <div class="report-photo">
+                                {{ report.get_status_display }}
 
-                            <span class="report-photo-title">
-                                📷 Report Photo
                             </span>
-
-                            <img
-                                src="{{ report.photo.url }}"
-                                alt="Photo uploaded for {{ report.get_problem_type_display }}"
-                            >
 
                         </div>
 
-                    {% endif %}
 
+                        <dl class="details">
+
+                            <div>
+                                <dt>Location</dt>
+                                <dd>{{ report.location }}</dd>
+                            </div>
+
+                            <div>
+                                <dt>Description</dt>
+                                <dd>{{ report.description }}</dd>
+                            </div>
+
+                            <div>
+                                <dt>Date reported</dt>
+                                <dd>{{ report.created_at }}</dd>
+                            </div>
+
+                            {% if report.updated_at %}
+
+                                <div>
+                                    <dt>Last updated</dt>
+                                    <dd>{{ report.updated_at }}</dd>
+                                </div>
+
+                            {% endif %}
+
+                        </dl>
+
+
+                        <!-- PHOTO -->
+
+                        {% if report.photo %}
+
+                            <div class="report-photo">
+
+                                <span class="report-photo-title">
+                                    Report photo
+                                </span>
+
+                                <img
+                                    src="{{ report.photo.url }}"
+                                    alt="Photo uploaded for {{ report.get_problem_type_display }}"
+                                >
+
+                            </div>
+
+                        {% endif %}
+
+
+                    </article>
+
+                {% endfor %}
+
+
+                <!-- STATUS GUIDE -->
+
+                <div class="status-guide">
+
+                    <h2>
+                        Report status guide
+                    </h2>
 
                     <p>
-
-                        <strong>📌 Status:</strong>
-
-                        <span class="status">
-
-                            {{ report.get_status_display }}
-
+                        <span class="badge badge-pending">Pending</span>
+                        <span>
+                            Your report has been submitted and is waiting
+                            to be reviewed.
                         </span>
-
                     </p>
-
 
                     <p>
-
-                        <strong>📅 Date Reported:</strong>
-
-                        {{ report.created_at }}
-
+                        <span class="badge badge-assigned">Assigned</span>
+                        <span>
+                            Your report has been assigned to a waste collector.
+                        </span>
                     </p>
 
+                    <p>
+                        <span class="badge badge-in_progress">In Progress</span>
+                        <span>
+                            A waste collector is currently working on the report.
+                        </span>
+                    </p>
 
-                    {% if report.updated_at %}
-
-                        <p>
-
-                            <strong>🔄 Last Updated:</strong>
-
-                            {{ report.updated_at }}
-
-                        </p>
-
-                    {% endif %}
-
+                    <p>
+                        <span class="badge badge-resolved">Resolved</span>
+                        <span>
+                            The reported waste problem has been addressed.
+                        </span>
+                    </p>
 
                 </div>
 
-            {% endfor %}
+
+            {% else %}
 
 
-            <!-- STATUS GUIDE -->
+                <!-- EMPTY STATE -->
 
-            <div class="status-guide">
+                <div class="empty-message">
 
-                <h3>
-                    📊 Report Status Guide
-                </h3>
+                    <div class="empty-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="6" y="4" width="12" height="17" rx="2"/><path d="M9 4h6v3H9zM9 12h6M9 16h6"/></svg>
+                    </div>
 
-                <p>
-                    <strong>Pending:</strong>
-                    Your report has been submitted and is waiting
-                    to be reviewed.
-                </p>
+                    <h2>
+                        No Waste Reports Yet
+                    </h2>
 
-                <p>
-                    <strong>Assigned:</strong>
-                    Your report has been assigned to a waste collector.
-                </p>
+                    <p>
+                        You have not submitted any waste reports.
+                        Once you submit a report, you will be able
+                        to track it here.
+                    </p>
 
-                <p>
-                    <strong>In Progress:</strong>
-                    A waste collector is currently working on the report.
-                </p>
+                    <a
+                        class="submit-button"
+                        href="{% url 'submit_report' %}"
+                    >
+                        Submit Your First Report
+                    </a>
 
-                <p>
-                    <strong>Resolved:</strong>
-                    The reported waste problem has been addressed.
-                </p>
-
-            </div>
-
-
-        {% else %}
-
-
-            <!-- EMPTY STATE -->
-
-            <div class="empty-message">
-
-                <div class="empty-icon">
-                    📋
                 </div>
 
-                <h3>
-                    No Waste Reports Yet
-                </h3>
 
-                <p>
-                    You have not submitted any waste reports.
-                    Once you submit a report, you will be able
-                    to track it here.
-                </p>
-
-                <a
-                    class="submit-button"
-                    href="{% url 'submit_report' %}"
-                >
-                    📝 Submit Your First Report
-                </a>
-
-            </div>
-
-
-        {% endif %}
-
-
-        <!-- FOOTER -->
-
-        <div class="footer">
-
-            <strong>♻️ SizaClean</strong>
-
-            <br>
-
-            Smart Waste Reporting &amp; Management System
-
-            <br><br>
-
-            Report. Track. Clean.
+            {% endif %}
 
         </div>
 
-
     </div>
+
+
+    <!-- FOOTER -->
+
+    <footer class="footer">
+
+        <strong>SizaClean</strong><br>
+        Smart Waste Reporting &amp; Management System<br>
+        Report. Track. Clean.
+
+    </footer>
 
 
 </body>

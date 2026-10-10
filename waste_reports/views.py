@@ -121,14 +121,20 @@ def submit_report(request):
         )
 
         if form.is_valid():
-
             report = form.save(commit=False)
 
-            # Automatically attach the logged-in resident
+            # Attach the logged-in resident
             report.resident = request.user
 
             # New reports always start as Pending
             report.status = 'pending'
+
+            # Save the selected map coordinates from the form
+            latitude = request.POST.get('latitude')
+            longitude = request.POST.get('longitude')
+
+            report.latitude = latitude if latitude else None
+            report.longitude = longitude if longitude else None
 
             report.save()
 
@@ -138,21 +144,18 @@ def submit_report(request):
             )
 
             for authority_profile in authority_profiles:
-
                 message = (
                     f'New waste report submitted: '
                     f'{report.get_problem_type_display()} '
                     f'at {report.location}.'
                 )
 
-                # Save notification in MySQL
                 Notification.objects.create(
                     recipient=authority_profile.user,
                     report=report,
                     message=message
                 )
 
-                # Send notification immediately through WebSocket
                 send_realtime_notification(
                     authority_profile.user,
                     message
@@ -166,9 +169,7 @@ def submit_report(request):
     return render(
         request,
         'waste_reports/submit_report.html',
-        {
-            'form': form
-        }
+        {'form': form}
     )
 
 
@@ -360,12 +361,28 @@ def authority_dashboard(request):
     resolved_count = WasteReport.objects.filter(
         status='resolved'
     ).count()
+     
+    # Prepare waste report data for the map
+    reports_map_data = [
+        {
+            'latitude': report.latitude,
+            'longitude': report.longitude,
+            'problem': report.get_problem_type_display(),
+            'location': report.location,
+            'status': report.get_status_display(),
+            'description': report.description,
+        }
+        for report in reports
+        if report.latitude is not None
+        and report.longitude is not None
+    ]
 
     return render(
         request,
         'waste_reports/authority_dashboard.html',
         {
             'reports': reports,
+            'reports_map_data': reports_map_data,
             'pending_count': pending_count,
             'in_progress_count': in_progress_count,
             'resolved_count': resolved_count,

@@ -9,330 +9,244 @@
 
     <title>Notifications | SizaClean</title>
 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700;800&family=Figtree:wght@400;600&display=swap" rel="stylesheet">
+
     <style>
 
-        * {
-            box-sizing: border-box;
+        :root {
+            --ink: #10231c;
+            --forest: #14392e;
+            --hivis: #d4ee3c;
+            --mist: #eef2ef;
+            --line: #d5ddd8;
+            --muted: #4d5f57;
         }
+
+        * { box-sizing: border-box; margin: 0; }
 
         body {
-            margin: 0;
-            font-family: Arial, Helvetica, sans-serif;
-            background-color: #f3f6f5;
-            color: #333;
+            font-family: "Figtree", system-ui, sans-serif;
+            background: var(--mist);
+            color: var(--ink);
+            line-height: 1.5;
         }
 
-        /* HEADER */
+        a { color: inherit; text-decoration: none; }
+        a:focus-visible, button:focus-visible { outline: 3px solid var(--hivis); outline-offset: 3px; }
 
-        .header {
-            background-color: #1f5a47;
-            color: white;
-            padding: 30px 45px;
+        /* TOP BAR */
+
+        .bar { background: var(--forest); color: #fff; }
+
+        .bar-inner {
+            max-width: 1080px; margin: 0 auto; padding: 14px 24px;
+            display: flex; align-items: center; gap: 24px 32px; flex-wrap: wrap;
         }
 
-        .brand {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 18px;
+        .brand { display: flex; align-items: center; gap: 12px; margin-right: auto; }
+        .brand svg { width: 34px; height: 34px; flex-shrink: 0; }
+
+        .brand b {
+            font-family: "Bricolage Grotesque", sans-serif;
+            font-size: 1.35rem; font-weight: 800; letter-spacing: -.01em;
+            display: block; line-height: 1.1;
         }
 
-        .brand-icon {
-            font-size: 34px;
+        .brand span { font-size: .78rem; color: #a9c2b6; }
+
+        nav { display: flex; gap: 4px; flex-wrap: wrap; }
+
+        nav a {
+            padding: 8px 14px; border-radius: 8px;
+            font-weight: 600; font-size: .95rem; color: #cfe0d7;
         }
 
-        .brand-name {
-            font-size: 30px;
-            font-weight: 700;
+        nav a:hover { background: rgba(255,255,255,.1); color: #fff; }
+        nav a[aria-current="page"] { background: var(--hivis); color: var(--ink); }
+
+        .logout {
+            font-weight: 600; font-size: .95rem; padding: 8px 14px;
+            border: 1.5px solid #4c7365; border-radius: 8px; color: #cfe0d7;
         }
 
-        .header h1 {
-            margin: 0 0 7px 0;
-            font-size: 27px;
+        .logout:hover { border-color: #fff; color: #fff; }
+
+        /* PAGE */
+
+        .container { max-width: 1080px; margin: 0 auto; padding: 40px 24px 24px; }
+        .content { max-width: 780px; }
+
+        .page-head { margin-bottom: 28px; }
+
+        .page-head h1 {
+            font-family: "Bricolage Grotesque", sans-serif;
+            font-size: clamp(2rem, 4.5vw, 2.8rem); font-weight: 800;
+            letter-spacing: -.025em; line-height: 1.1; margin-bottom: 10px;
         }
 
-        .header p {
-            margin: 0;
-            font-size: 16px;
-            opacity: 0.95;
-        }
-
-        /* NAVIGATION */
-
-        .navigation {
-            background-color: white;
-            padding: 16px 45px;
-            border-bottom: 1px solid #dfe5e2;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.04);
-        }
-
-        .navigation a {
-            margin-right: 25px;
-            text-decoration: none;
-            color: #1f5a47;
-            font-weight: bold;
-        }
-
-        .navigation a:hover {
-            color: #163a2c;
-        }
-
-        /* MAIN CONTAINER */
-
-        .container {
-            max-width: 900px;
-            margin: 40px auto;
-            padding: 0 20px;
-        }
-
-        /* INTRODUCTION */
-
-        .introduction {
-            background-color: white;
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 5px 18px rgba(0, 0, 0, 0.07);
-            margin-bottom: 25px;
-        }
-
-        .introduction h2 {
-            margin-top: 0;
-            color: #1f5a47;
-            font-size: 26px;
-        }
-
-        .introduction p {
-            color: #66736f;
-            line-height: 1.6;
-            margin-bottom: 0;
-        }
+        .page-head p { color: var(--muted); font-size: 1.05rem; }
 
         /* REAL-TIME STATUS */
 
         .realtime-status {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin-top: 18px;
-            font-size: 14px;
-            color: #66736f;
+            display: flex; align-items: center; gap: 8px;
+            margin-top: 14px; font-size: .92rem; color: var(--muted);
         }
 
         .status-dot {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
+            width: 10px; height: 10px; border-radius: 50%;
             background-color: #aebbb6;
         }
 
-        .status-dot.connected {
-            background-color: #2e8b57;
-        }
+        .status-dot.connected { background-color: #2e8b57; }
 
         /* NEW NOTIFICATION ALERT */
 
         .live-alert {
             display: none;
-            background-color: #eaf7f0;
-            border: 1px solid #9bcab0;
-            color: #1f5a47;
-            padding: 15px 18px;
-            border-radius: 8px;
+            background: #f4fbc9;
+            border: 1.5px solid var(--hivis);
+            color: var(--ink);
+            padding: 14px 18px;
+            border-radius: 12px;
             margin-bottom: 20px;
-            font-weight: bold;
+            font-weight: 600;
         }
 
         /* NOTIFICATION ACTIONS */
 
         .notification-actions {
-            display: flex;
-            justify-content: flex-end;
-            margin-bottom: 20px;
+            display: flex; justify-content: flex-end; margin-bottom: 18px;
         }
 
         .mark-all-button {
-            background-color: #1f5a47;
-            color: white;
-            border: none;
-            padding: 11px 18px;
-            border-radius: 7px;
-            font-size: 14px;
-            font-weight: bold;
-            cursor: pointer;
+            background: var(--forest); color: #fff; border: none;
+            padding: 12px 20px; border-radius: 12px;
+            font: inherit; font-weight: 600; cursor: pointer;
+            transition: transform .15s;
         }
 
-        .mark-all-button:hover {
-            background-color: #163a2c;
-        }
+        .mark-all-button:hover { transform: translateY(-2px); }
 
         /* NOTIFICATION */
 
         .notification {
-            background-color: white;
-            padding: 25px;
-            margin-bottom: 18px;
-            border-left: 5px solid #aebbb6;
-            border-radius: 10px;
-            box-shadow: 0 5px 18px rgba(0, 0, 0, 0.07);
+            background: #f8faf9;
+            padding: 22px 24px;
+            margin-bottom: 14px;
+            border: 1.5px solid var(--line);
+            border-left: 6px solid var(--line);
+            border-radius: 16px;
         }
 
-        /* UNREAD NOTIFICATION */
-
         .notification.unread {
-            border-left-color: #1f5a47;
-            background-color: #f8fcfa;
+            background: #fff;
+            border-left-color: #a9c61b;
         }
 
         .notification-top {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 12px;
+            display: flex; align-items: center; flex-wrap: wrap;
+            gap: 12px; margin-bottom: 12px;
         }
 
         .notification-icon {
-            font-size: 25px;
+            width: 40px; height: 40px; border-radius: 12px;
+            display: grid; place-items: center;
+            background: var(--mist); color: var(--forest);
+            flex-shrink: 0;
+        }
+
+        .notification-icon svg { width: 22px; height: 22px; }
+
+        .notification.unread .notification-icon {
+            background: var(--forest); color: var(--hivis);
         }
 
         .notification-title {
-            color: #1f5a47;
-            font-size: 18px;
-            font-weight: bold;
+            font-family: "Bricolage Grotesque", sans-serif;
+            font-size: 1.15rem; font-weight: 700; letter-spacing: -.01em;
         }
 
-        .unread-label {
-            background-color: #1f5a47;
-            color: white;
-            padding: 4px 9px;
-            border-radius: 12px;
-            font-size: 11px;
-            font-weight: bold;
+        .unread-label, .read-label {
+            padding: 3px 10px; border-radius: 999px;
+            font-size: .75rem; font-weight: 600; letter-spacing: .02em;
         }
 
-        .read-label {
-            background-color: #e2e8e5;
-            color: #5f6c67;
-            padding: 4px 9px;
-            border-radius: 12px;
-            font-size: 11px;
-            font-weight: bold;
-        }
+        .unread-label { background: var(--hivis); color: var(--ink); }
+        .read-label { background: var(--mist); color: var(--muted); }
 
         .notification-message {
-            font-size: 16px;
-            line-height: 1.6;
-            color: #35443f;
-            margin: 8px 0 15px 0;
+            font-size: 1.02rem; line-height: 1.6; margin: 0 0 8px 0;
         }
 
         .notification-date {
-            font-size: 13px;
-            color: #71807b;
-            margin: 0 0 15px 0;
+            font-size: .88rem; color: var(--muted); margin: 0 0 16px 0;
         }
+
+        .notification-date:last-child { margin-bottom: 0; }
 
         /* BUTTON */
 
         .read-button {
-            background-color: white;
-            color: #1f5a47;
-            border: 1px solid #1f5a47;
-            padding: 8px 14px;
-            border-radius: 6px;
-            font-size: 13px;
-            font-weight: bold;
-            cursor: pointer;
+            background: transparent; color: var(--forest);
+            border: 1.5px solid var(--forest);
+            padding: 9px 16px; border-radius: 10px;
+            font: inherit; font-size: .9rem; font-weight: 600; cursor: pointer;
         }
 
-        .read-button:hover {
-            background-color: #1f5a47;
-            color: white;
-        }
+        .read-button:hover { background: var(--forest); color: #fff; }
 
         /* EMPTY STATE */
 
         .empty-message {
-            background-color: white;
-            padding: 45px 30px;
-            border-radius: 12px;
-            box-shadow: 0 5px 18px rgba(0, 0, 0, 0.07);
-            text-align: center;
+            background: #fff; border: 1.5px solid var(--line);
+            padding: 44px 30px; border-radius: 20px; text-align: center;
         }
 
         .empty-icon {
-            font-size: 50px;
-            margin-bottom: 10px;
+            width: 56px; height: 56px; border-radius: 16px;
+            display: grid; place-items: center; margin: 0 auto 16px;
+            background: var(--mist); color: var(--forest);
         }
+
+        .empty-icon svg { width: 28px; height: 28px; }
 
         .empty-message h3 {
-            color: #1f5a47;
-            font-size: 23px;
-            margin-bottom: 10px;
+            font-family: "Bricolage Grotesque", sans-serif;
+            font-size: 1.4rem; font-weight: 700; margin-bottom: 8px;
         }
 
-        .empty-message p {
-            color: #66736f;
-            line-height: 1.6;
-        }
+        .empty-message p { color: var(--muted); max-width: 40ch; margin: 0 auto; }
 
         /* FOOTER */
 
         .footer {
-            text-align: center;
-            margin-top: 45px;
-            padding: 25px;
-            color: #71807b;
-            font-size: 14px;
-            line-height: 1.6;
+            max-width: 1080px; margin: 0 auto; padding: 32px 24px 48px;
+            color: #6b7d75; font-size: .9rem;
         }
 
         .footer strong {
-            color: #1f5a47;
+            color: var(--forest);
+            font-family: "Bricolage Grotesque", sans-serif; font-size: 1.05rem;
         }
 
         /* MOBILE */
 
         @media (max-width: 700px) {
 
-            .header {
-                padding: 25px 20px;
-            }
+            .container { padding-top: 28px; }
 
-            .brand-name {
-                font-size: 26px;
-            }
+            .notification { padding: 20px; }
 
-            .header h1 {
-                font-size: 23px;
-            }
+            .notification-actions { justify-content: stretch; }
 
-            .navigation {
-                padding: 15px 20px;
-            }
+            .mark-all-button { width: 100%; }
 
-            .navigation a {
-                display: block;
-                margin-bottom: 10px;
-            }
+        }
 
-            .container {
-                margin: 25px auto;
-            }
-
-            .introduction,
-            .notification,
-            .empty-message {
-                padding: 24px 20px;
-            }
-
-            .notification-actions {
-                justify-content: stretch;
-            }
-
-            .mark-all-button {
-                width: 100%;
-            }
-
+        @media (prefers-reduced-motion: reduce) {
+            .mark-all-button { transition: none; }
         }
 
     </style>
@@ -343,232 +257,244 @@
 <body>
 
 
-    <!-- HEADER -->
+    <!-- TOP BAR -->
 
-    <div class="header">
+    <header class="bar">
 
-        <div class="brand">
+        <div class="bar-inner">
 
-            <span class="brand-icon">♻️</span>
+            <a class="brand" href="{% url 'home' %}">
 
-            <span class="brand-name">
-                SizaClean
-            </span>
+                <svg viewBox="0 0 40 40" fill="none" stroke="#d4ee3c" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M14 9l5-5 6 9M26 7l9 14-8 1M32 31l-6 5-9-3M13 36L5 22l8-1M8 14l6-5M30 28l2 4"/>
+                </svg>
+
+                <div>
+                    <b>SizaClean</b>
+                    <span>Smart Waste Reporting &amp; Management System</span>
+                </div>
+
+            </a>
+
+            <nav aria-label="Main">
+
+                <a href="{% url 'home' %}">
+                    Home
+                </a>
+
+                {% if user.userprofile.role == 'resident' %}
+
+                    <a href="{% url 'my_reports' %}">
+                        My Waste Reports
+                    </a>
+
+                    <a href="{% url 'submit_report' %}">
+                        Submit Waste Report
+                    </a>
+
+                {% elif user.userprofile.role == 'collector' %}
+
+                    <a href="{% url 'collector_dashboard' %}">
+                        Collector Dashboard
+                    </a>
+
+                {% elif user.userprofile.role == 'authority' %}
+
+                    <a href="{% url 'authority_dashboard' %}">
+                        Authority Dashboard
+                    </a>
+
+                {% endif %}
+
+                <a href="{% url 'notifications' %}" aria-current="page">
+                    Notifications
+                </a>
+
+            </nav>
+
+            <a class="logout" href="{% url 'logout' %}">
+                Logout
+            </a>
 
         </div>
 
-        <h1>
-            🔔 Notifications
-        </h1>
-
-        <p>
-            Stay updated about your waste reports.
-        </p>
-
-    </div>
-
-
-    <!-- NAVIGATION -->
-
-    <div class="navigation">
-
-        <a href="{% url 'home' %}">
-            Home
-        </a>
-
-        <a href="{% url 'my_reports' %}">
-            📋 My Waste Reports
-        </a>
-
-        <a href="{% url 'submit_report' %}">
-            📝 Submit Waste Report
-        </a>
-
-        <a href="{% url 'logout' %}">
-            Logout
-        </a>
-
-    </div>
+    </header>
 
 
     <!-- MAIN CONTENT -->
 
     <div class="container">
 
-
-        <!-- INTRODUCTION -->
-
-        <div class="introduction">
-
-            <h2>
-                🔔 Your Notifications
-            </h2>
-
-            <p>
-                Here you can see important updates about your waste
-                reports, including changes to their status and
-                actions taken by waste management staff.
-            </p>
-
-            <div class="realtime-status">
-
-                <span
-                    id="status-dot"
-                    class="status-dot">
-                </span>
-
-                <span id="connection-status">
-                    Connecting to real-time notifications...
-                </span>
-
-            </div>
-
-        </div>
+        <div class="content">
 
 
-        <!-- LIVE ALERT -->
+            <!-- INTRODUCTION -->
 
-        <div
-            id="live-alert"
-            class="live-alert">
-        </div>
+            <div class="page-head">
 
+                <h1>
+                    Notifications
+                </h1>
 
-        <!-- NOTIFICATIONS -->
+                <p>
+                    Here you can see important updates about your waste
+                    reports, including changes to their status and
+                    actions taken by waste management staff.
+                </p>
 
-        <div id="notifications-container">
+                <div class="realtime-status">
 
-            {% if notifications %}
+                    <span
+                        id="status-dot"
+                        class="status-dot">
+                    </span>
 
-                <!-- MARK ALL AS READ -->
-
-                <div class="notification-actions">
-
-                    <form method="POST"
-                          action="{% url 'mark_all_notifications_read' %}">
-
-                        {% csrf_token %}
-
-                        <button type="submit" class="mark-all-button">
-                            ✓ Mark All as Read
-                        </button>
-
-                    </form>
+                    <span id="connection-status">
+                        Connecting to real-time notifications...
+                    </span>
 
                 </div>
 
+            </div>
 
-                {% for notification in notifications %}
 
-                    <div class="notification {% if not notification.is_read %}unread{% endif %}">
+            <!-- LIVE ALERT -->
 
-                        <div class="notification-top">
+            <div
+                id="live-alert"
+                class="live-alert">
+            </div>
 
-                            <span class="notification-icon">
-                                🔔
-                            </span>
 
-                            <span class="notification-title">
-                                Waste Report Update
-                            </span>
+            <!-- NOTIFICATIONS -->
+
+            <div id="notifications-container">
+
+                {% if notifications %}
+
+                    <!-- MARK ALL AS READ -->
+
+                    <div class="notification-actions">
+
+                        <form method="POST"
+                              action="{% url 'mark_all_notifications_read' %}">
+
+                            {% csrf_token %}
+
+                            <button type="submit" class="mark-all-button">
+                                ✓ Mark All as Read
+                            </button>
+
+                        </form>
+
+                    </div>
+
+
+                    {% for notification in notifications %}
+
+                        <div class="notification {% if not notification.is_read %}unread{% endif %}">
+
+                            <div class="notification-top">
+
+                                <span class="notification-icon">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 8a6 6 0 0112 0c0 7 3 9 3 9H3s3-2 3-9M10.3 21a2 2 0 003.4 0"/></svg>
+                                </span>
+
+                                <span class="notification-title">
+                                    Waste Report Update
+                                </span>
+
+
+                                {% if not notification.is_read %}
+
+                                    <span class="unread-label">
+                                        UNREAD
+                                    </span>
+
+                                {% else %}
+
+                                    <span class="read-label">
+                                        READ
+                                    </span>
+
+                                {% endif %}
+
+                            </div>
+
+
+                            <p class="notification-message">
+
+                                {{ notification.message }}
+
+                            </p>
+
+
+                            <p class="notification-date">
+
+                                {{ notification.created_at }}
+
+                            </p>
 
 
                             {% if not notification.is_read %}
 
-                                <span class="unread-label">
-                                    UNREAD
-                                </span>
+                                <form method="POST"
+                                      action="{% url 'mark_notification_read' notification.id %}">
 
-                            {% else %}
+                                    {% csrf_token %}
 
-                                <span class="read-label">
-                                    READ
-                                </span>
+                                    <button type="submit" class="read-button">
+                                        ✓ Mark as Read
+                                    </button>
+
+                                </form>
 
                             {% endif %}
 
                         </div>
 
+                    {% endfor %}
 
-                        <p class="notification-message">
 
-                            {{ notification.message }}
+                {% else %}
 
+                    <!-- EMPTY STATE -->
+
+                    <div class="empty-message">
+
+                        <div class="empty-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 8a6 6 0 0112 0c0 7 3 9 3 9H3s3-2 3-9M10.3 21a2 2 0 003.4 0"/></svg>
+                        </div>
+
+                        <h3>
+                            No Notifications
+                        </h3>
+
+                        <p>
+                            You currently have no notifications.
+                            Updates about your waste reports will appear here.
                         </p>
-
-
-                        <p class="notification-date">
-
-                            📅
-                            {{ notification.created_at }}
-
-                        </p>
-
-
-                        {% if not notification.is_read %}
-
-                            <form method="POST"
-                                  action="{% url 'mark_notification_read' notification.id %}">
-
-                                {% csrf_token %}
-
-                                <button type="submit" class="read-button">
-                                    ✓ Mark as Read
-                                </button>
-
-                            </form>
-
-                        {% endif %}
 
                     </div>
 
-                {% endfor %}
+                {% endif %}
 
-
-            {% else %}
-
-                <!-- EMPTY STATE -->
-
-                <div class="empty-message">
-
-                    <div class="empty-icon">
-                        🔔
-                    </div>
-
-                    <h3>
-                        No Notifications
-                    </h3>
-
-                    <p>
-                        You currently have no notifications.
-                        Updates about your waste reports will appear here.
-                    </p>
-
-                </div>
-
-            {% endif %}
+            </div>
 
         </div>
-
-
-        <!-- FOOTER -->
-
-        <div class="footer">
-
-            <strong>♻️ SizaClean</strong>
-
-            <br>
-
-            Smart Waste Reporting &amp; Management System
-
-            <br><br>
-
-            Report. Track. Clean.
-
-        </div>
-
 
     </div>
+
+
+    <!-- FOOTER -->
+
+    <footer class="footer">
+
+        <strong>SizaClean</strong><br>
+        Smart Waste Reporting &amp; Management System<br>
+        Report. Track. Clean.
+
+    </footer>
 
 
     <!-- REAL-TIME WEBSOCKET -->
@@ -630,7 +556,7 @@
                 <div class="notification-top">
 
                     <span class="notification-icon">
-                        🔔
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 8a6 6 0 0112 0c0 7 3 9 3 9H3s3-2 3-9M10.3 21a2 2 0 003.4 0"/></svg>
                     </span>
 
                     <span class="notification-title">
@@ -648,7 +574,7 @@
                 </p>
 
                 <p class="notification-date">
-                    📅 Just now
+                    Just now
                 </p>
 
             `;
@@ -683,7 +609,7 @@
                 document.getElementById("live-alert");
 
             liveAlert.textContent =
-                "🔔 New notification: " + message;
+                "New notification: " + message;
 
             liveAlert.style.display = "block";
 

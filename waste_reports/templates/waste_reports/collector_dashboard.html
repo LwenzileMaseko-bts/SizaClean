@@ -1,220 +1,324 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Waste Collector Dashboard</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Waste Collector Dashboard | SizaClean</title>
+
+    <!-- Leaflet map CSS -->
+    <link
+        rel="stylesheet"
+        href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    >
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700;800&family=Figtree:wght@400;600&display=swap" rel="stylesheet">
 
     <style>
+        :root {
+            --ink: #10231c;
+            --forest: #14392e;
+            --hivis: #d4ee3c;
+            --mist: #eef2ef;
+            --line: #d5ddd8;
+            --muted: #4d5f57;
+        }
+        * { box-sizing: border-box; margin: 0; }
         body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background-color: #f4f6f8;
-            color: #333;
+            font-family: "Figtree", system-ui, sans-serif;
+            background: var(--mist);
+            color: var(--ink);
+            line-height: 1.5;
+        }
+        a { color: inherit; text-decoration: none; }
+        a:focus-visible, button:focus-visible { outline: 3px solid var(--hivis); outline-offset: 3px; }
+
+        /* Top bar */
+        .bar { background: var(--forest); color: #fff; }
+        .bar-inner {
+            max-width: 1080px; margin: 0 auto; padding: 14px 24px;
+            display: flex; align-items: center; gap: 24px 32px; flex-wrap: wrap;
+        }
+        .brand { display: flex; align-items: center; gap: 12px; margin-right: auto; }
+        .brand svg { width: 34px; height: 34px; flex-shrink: 0; }
+        .brand b {
+            font-family: "Bricolage Grotesque", sans-serif;
+            font-size: 1.35rem; font-weight: 800; letter-spacing: -.01em;
+            display: block; line-height: 1.1;
+        }
+        .brand span { font-size: .78rem; color: #a9c2b6; }
+        nav { display: flex; gap: 4px; flex-wrap: wrap; }
+        nav a { padding: 8px 14px; border-radius: 8px; font-weight: 600; font-size: .95rem; color: #cfe0d7; }
+        nav a:hover { background: rgba(255,255,255,.1); color: #fff; }
+        nav a[aria-current="page"] { background: var(--hivis); color: var(--ink); }
+        .logout {
+            font-weight: 600; font-size: .95rem; padding: 8px 14px;
+            border: 1.5px solid #4c7365; border-radius: 8px; color: #cfe0d7;
+        }
+        .logout:hover { border-color: #fff; color: #fff; }
+
+        /* Page */
+        .container { max-width: 1080px; margin: 0 auto; padding: 40px 24px 24px; }
+        .page-head { margin-bottom: 28px; }
+        .page-head h1 {
+            font-family: "Bricolage Grotesque", sans-serif;
+            font-size: clamp(2rem, 4.5vw, 2.8rem); font-weight: 800;
+            letter-spacing: -.025em; line-height: 1.1; margin-bottom: 8px;
+        }
+        .page-head p { color: var(--muted); }
+
+        /* Summary counts */
+        .stats {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 14px; margin-bottom: 28px;
+        }
+        .stat {
+            background: #fff; border: 1.5px solid var(--line);
+            border-radius: 16px; padding: 16px 20px;
+        }
+        .stat b {
+            display: block; font-family: "Bricolage Grotesque", sans-serif;
+            font-size: 2rem; font-weight: 800; line-height: 1.1;
+        }
+        .stat span { color: var(--muted); font-size: .92rem; }
+        .stat-total { background: var(--hivis); border-color: var(--hivis); }
+        .stat-total span { color: var(--ink); }
+
+        /* Map */
+        .map-section {
+            background: #fff; border: 1.5px solid var(--line);
+            padding: 24px; margin-bottom: 36px; border-radius: 20px;
+        }
+        .map-section h2 {
+            font-family: "Bricolage Grotesque", sans-serif;
+            font-size: 1.4rem; font-weight: 700; margin-bottom: 4px;
+        }
+        .map-message { margin-bottom: 14px; color: var(--muted); font-size: .95rem; }
+        #reports-map {
+            height: 380px; width: 100%; border-radius: 12px; z-index: 1;
         }
 
-        .header {
-            background-color: #1f4d3b;
-            color: white;
-            padding: 25px 40px;
-        }
-
-        .header h1 {
-            margin: 0 0 8px 0;
-        }
-
-        .header p {
-            margin: 0;
-        }
-
-        .navigation {
-            background-color: white;
-            padding: 15px 40px;
-            border-bottom: 1px solid #ddd;
-        }
-
-        .navigation a {
-            margin-right: 20px;
-            text-decoration: none;
-            color: #1f4d3b;
-            font-weight: bold;
-        }
-
-        .container {
-            max-width: 1100px;
-            margin: 30px auto;
-            padding: 0 20px;
-        }
-
+        /* Reports */
         .page-title {
-            margin-bottom: 25px;
+            font-family: "Bricolage Grotesque", sans-serif;
+            font-size: 1.6rem; font-weight: 700; margin-bottom: 16px;
         }
-
         .report {
-            background-color: white;
-            padding: 25px;
-            margin-bottom: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+            background: #fff; border: 1.5px solid var(--line);
+            border-left: 6px solid var(--line);
+            padding: 24px 26px; margin-bottom: 16px; border-radius: 16px;
         }
+        .report-assigned { border-left-color: #e0a526; }
+        .report-in_progress { border-left-color: #a9c61b; }
+        .report-resolved { border-left-color: #9bb8aa; }
 
-        .report h2 {
-            margin-top: 0;
-            color: #1f4d3b;
+        .report-head {
+            display: flex; align-items: center; justify-content: space-between;
+            gap: 12px; flex-wrap: wrap; margin-bottom: 14px;
         }
+        .report-head h2 {
+            font-family: "Bricolage Grotesque", sans-serif;
+            font-size: 1.35rem; font-weight: 700; letter-spacing: -.01em;
+        }
+        .badge {
+            font-size: .82rem; font-weight: 600; padding: 4px 12px; border-radius: 999px;
+        }
+        .badge-assigned { background: #fdecc8; color: #6b4300; }
+        .badge-in_progress { background: var(--hivis); color: var(--ink); }
+        .badge-resolved { background: #dfeee6; color: var(--forest); }
 
-        .report p {
-            line-height: 1.6;
-        }
+        .details { display: grid; gap: 10px; }
+        .details div { display: grid; grid-template-columns: 110px 1fr; gap: 12px; }
+        .details dt { color: var(--muted); font-size: .92rem; }
+        .details dd { margin: 0; overflow-wrap: anywhere; }
 
-        .status {
-            font-weight: bold;
+        .report-actions { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
+        .report-actions > * { margin-top: 20px; }
+        .action-section button, .directions {
+            display: inline-block; padding: 12px 20px; border-radius: 12px;
+            font: inherit; font-weight: 600; cursor: pointer;
+            transition: transform .15s;
         }
-
-        .action-section {
-            margin-top: 20px;
-        }
-
-        .action-section button {
-            padding: 10px 18px;
-            border: none;
-            border-radius: 5px;
-            background-color: #1f4d3b;
-            color: white;
-            cursor: pointer;
-            font-weight: bold;
-        }
-
-        .action-section button:hover {
-            background-color: #163a2c;
-        }
+        .action-section button { border: none; background: var(--forest); color: #fff; }
+        .action-section button:hover, .directions:hover { transform: translateY(-2px); }
+        .directions { border: 1.5px solid var(--forest); color: var(--forest); background: transparent; }
 
         .empty-message {
-            background-color: white;
-            padding: 25px;
-            border-radius: 8px;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+            background: #fff; border: 1.5px solid var(--line);
+            padding: 28px; border-radius: 16px; color: var(--muted);
         }
 
+        .footer { max-width: 1080px; margin: 0 auto; padding: 32px 24px 48px; color: #6b7d75; font-size: .9rem; }
+        .footer strong { color: var(--forest); font-family: "Bricolage Grotesque", sans-serif; font-size: 1.05rem; }
+
         @media (max-width: 700px) {
-            .header {
-                padding: 20px;
-            }
-
-            .navigation {
-                padding: 15px 20px;
-            }
-
-            .container {
-                margin: 20px auto;
-            }
+            .container { padding-top: 28px; }
+            #reports-map { height: 300px; }
+            .details div { grid-template-columns: 1fr; gap: 0; }
+            .action-section, .action-section button, .directions { width: 100%; text-align: center; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .action-section button, .directions { transition: none; }
         }
     </style>
 </head>
 
 <body>
 
-    <div class="header">
-        <h1>Waste Collector Dashboard</h1>
-        <p>Welcome, {{ user.username }}!</p>
-    </div>
+    <!-- Top bar -->
+    <header class="bar">
+        <div class="bar-inner">
 
-    <div class="navigation">
-        <a href="{% url 'home' %}">Home</a>
-        <a href="{% url 'notifications' %}">Notifications</a>
-        <a href="{% url 'logout' %}">Logout</a>
-    </div>
+            <a class="brand" href="{% url 'home' %}">
+                <svg viewBox="0 0 40 40" fill="none" stroke="#d4ee3c" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M14 9l5-5 6 9M26 7l9 14-8 1M32 31l-6 5-9-3M13 36L5 22l8-1M8 14l6-5M30 28l2 4"/>
+                </svg>
+                <div>
+                    <b>SizaClean</b>
+                    <span>Smart Waste Reporting &amp; Management System</span>
+                </div>
+            </a>
+
+            <nav aria-label="Main">
+                <a href="{% url 'home' %}">Home</a>
+                <a href="{% url 'collector_dashboard' %}" aria-current="page">Collector Dashboard</a>
+                <a href="{% url 'notifications' %}">Notifications</a>
+            </nav>
+
+            <a class="logout" href="{% url 'logout' %}">Logout</a>
+
+        </div>
+    </header>
 
     <div class="container">
+
+        <div class="page-head">
+            <h1>Waste Collector Dashboard</h1>
+            <p>Welcome, {{ user.username }}!</p>
+        </div>
+
+        {% if reports %}
+
+            <!-- Summary counts -->
+            {% regroup reports|dictsort:"status" by status as status_groups %}
+
+            <div class="stats">
+                <div class="stat stat-total">
+                    <b>{{ reports|length }}</b>
+                    <span>Total assigned</span>
+                </div>
+                {% for group in status_groups %}
+                    <div class="stat">
+                        <b>{{ group.list|length }}</b>
+                        <span>{{ group.list.0.get_status_display }}</span>
+                    </div>
+                {% endfor %}
+            </div>
+
+        {% endif %}
+
+        <!-- Map of assigned waste reports -->
+        <div class="map-section">
+            <h2>Map of My Assigned Reports</h2>
+
+            <p class="map-message" id="map-message">
+                View the locations of your assigned waste reports.
+            </p>
+
+            <div id="reports-map"></div>
+        </div>
 
         <h2 class="page-title">My Assigned Waste Reports</h2>
 
         {% if reports %}
 
-            {% for report in reports %}
+            {% for report in reports|dictsort:"status" %}
 
-                <div class="report">
+                <article class="report report-{{ report.status }}">
 
-                    <h2>
-                        {{ report.get_problem_type_display }}
-                    </h2>
+                    <div class="report-head">
+                        <h2>
+                            {{ report.get_problem_type_display }}
+                        </h2>
 
-                    <p>
-                        <strong>Location:</strong>
-                        {{ report.location }}
-                    </p>
-
-                    <p>
-                        <strong>Description:</strong>
-                        {{ report.description }}
-                    </p>
-
-                    <p>
-                        <strong>Status:</strong>
-
-                        <span class="status">
+                        <span class="status badge badge-{{ report.status }}">
                             {{ report.get_status_display }}
                         </span>
-                    </p>
+                    </div>
 
-                    {% if report.status == 'assigned' %}
-
-                        <div class="action-section">
-
-                            <form method="POST"
-                                  action="{% url 'update_report_status' report.id %}">
-
-                                {% csrf_token %}
-
-                                <input
-                                    type="hidden"
-                                    name="status"
-                                    value="in_progress"
-                                >
-
-                                <button type="submit">
-                                    Start Work
-                                </button>
-
-                            </form>
-
+                    <dl class="details">
+                        <div>
+                            <dt>Location</dt>
+                            <dd>{{ report.location }}</dd>
                         </div>
-
-                    {% elif report.status == 'in_progress' %}
-
-                        <div class="action-section">
-
-                            <form method="POST"
-                                  action="{% url 'update_report_status' report.id %}">
-
-                                {% csrf_token %}
-
-                                <input
-                                    type="hidden"
-                                    name="status"
-                                    value="resolved"
-                                >
-
-                                <button type="submit">
-                                    Mark as Resolved
-                                </button>
-
-                            </form>
-
+                        <div>
+                            <dt>Description</dt>
+                            <dd>{{ report.description }}</dd>
                         </div>
+                        <div>
+                            <dt>Reported</dt>
+                            <dd>{{ report.created_at }}</dd>
+                        </div>
+                    </dl>
 
-                    {% elif report.status == 'resolved' %}
+                    <div class="report-actions">
 
-                        <p>
-                            <strong>This report has been resolved.</strong>
-                        </p>
+                        {% if report.status == 'assigned' %}
 
-                    {% endif %}
+                            <div class="action-section">
+                                <form method="POST"
+                                      action="{% url 'update_report_status' report.id %}">
 
-                    <p>
-                        <strong>Reported:</strong>
-                        {{ report.created_at }}
-                    </p>
+                                    {% csrf_token %}
 
-                </div>
+                                    <input
+                                        type="hidden"
+                                        name="status"
+                                        value="in_progress"
+                                    >
+
+                                    <button type="submit">
+                                        Start Work
+                                    </button>
+
+                                </form>
+                            </div>
+
+                        {% elif report.status == 'in_progress' %}
+
+                            <div class="action-section">
+                                <form method="POST"
+                                      action="{% url 'update_report_status' report.id %}">
+
+                                    {% csrf_token %}
+
+                                    <input
+                                        type="hidden"
+                                        name="status"
+                                        value="resolved"
+                                    >
+
+                                    <button type="submit">
+                                        Mark as Resolved
+                                    </button>
+
+                                </form>
+                            </div>
+
+                        {% endif %}
+
+                        {% if report.latitude is not None and report.longitude is not None %}
+                            <a class="directions"
+                               href="https://www.google.com/maps/dir/?api=1&destination={{ report.latitude }},{{ report.longitude }}"
+                               target="_blank"
+                               rel="noopener">
+                                Get directions
+                            </a>
+                        {% endif %}
+
+                    </div>
+
+                </article>
 
             {% endfor %}
 
@@ -230,5 +334,110 @@
 
     </div>
 
+    <footer class="footer">
+        <strong>SizaClean</strong><br>
+        Smart Waste Reporting &amp; Management System<br>
+        Report. Track. Clean.
+    </footer>
+
+    <!-- Leaflet map JavaScript -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+    <script>
+        // Initialize the map
+        const reportsMap = L.map('reports-map').setView(
+            [-15.4, 28.3],
+            12
+        );
+
+        // OpenStreetMap tiles
+        L.tileLayer(
+    'https://api.maptiler.com/maps/streets/{z}/{x}/{y}.png?key=0gZiXuzHZP8z4Sr5bJQN',
+    {
+        tileSize: 512,
+        zoomOffset: -1,
+        maxZoom: 19,
+        attribution:
+            '&copy; <a href="https://www.maptiler.com/">MapTiler</a> ' +
+            '&copy; OpenStreetMap contributors'
+    }
+).addTo(reportsMap);
+        // Collect only reports with saved coordinates.
+        // The reports supplied here should already be assigned
+        // to the logged-in collector by the Django view.
+        const assignedReports = [
+            {% for report in reports %}
+                {% if report.latitude is not None and report.longitude is not None %}
+                    {
+                        latitude: {{ report.latitude }},
+                        longitude: {{ report.longitude }},
+                        problem: "{{ report.get_problem_type_display|escapejs }}",
+                        location: "{{ report.location|escapejs }}",
+                        description: "{{ report.description|escapejs }}",
+                        status: "{{ report.get_status_display|escapejs }}"
+                    },
+                {% endif %}
+            {% endfor %}
+        ];
+
+        const mapMessage = document.getElementById('map-message');
+        const reportBounds = [];
+
+        // Safely display report information in map popups.
+        function escapeHtml(value) {
+            return String(value).replace(/[&<>"']/g, function (char) {
+                const entities = {
+                    '&': '&amp;',
+                    '<': '&lt;',
+                    '>': '&gt;',
+                    '"': '&quot;',
+                    "'": '&#39;'
+                };
+
+                return entities[char];
+            });
+        }
+
+        // Add a marker for every assigned report with coordinates.
+        assignedReports.forEach(function (report) {
+            const latitude = Number(report.latitude);
+            const longitude = Number(report.longitude);
+
+            if (!Number.isFinite(latitude) ||
+                !Number.isFinite(longitude)) {
+                return;
+            }
+
+            const marker = L.marker([latitude, longitude])
+                .addTo(reportsMap);
+
+            const popupContent = `
+                <strong>${escapeHtml(report.problem)}</strong><br>
+                <strong>Location:</strong> ${escapeHtml(report.location)}<br>
+                <strong>Description:</strong> ${escapeHtml(report.description)}<br>
+                <strong>Status:</strong> ${escapeHtml(report.status)}
+            `;
+
+            marker.bindPopup(popupContent);
+
+            reportBounds.push([latitude, longitude]);
+        });
+
+        // Adjust the map to show all report markers.
+        if (reportBounds.length > 0) {
+            reportsMap.fitBounds(reportBounds, {
+                padding: [30, 30],
+                maxZoom: 15
+            });
+
+            mapMessage.textContent =
+                'Click a marker to view its waste report details.';
+        } else {
+            mapMessage.textContent =
+                'No assigned reports with saved map coordinates are available yet.';
+        }
+    </script>
+
 </body>
 </html>
+

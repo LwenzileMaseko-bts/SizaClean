@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,107 +7,110 @@
 
     <title>Report a Waste Problem | SizaClean</title>
 
+    <!-- Leaflet map styles -->
+    <link
+        rel="stylesheet"
+        href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    >
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700;800&family=Figtree:wght@400;600&display=swap" rel="stylesheet">
+
     <style>
-        * {
-            box-sizing: border-box;
+        :root {
+            --ink: #10231c;
+            --forest: #14392e;
+            --hivis: #d4ee3c;
+            --mist: #eef2ef;
+            --line: #d5ddd8;
+            --muted: #4d5f57;
         }
+
+        * { box-sizing: border-box; margin: 0; }
 
         body {
-            margin: 0;
-            font-family: Arial, Helvetica, sans-serif;
-            background-color: #f3f6f5;
-            color: #333;
+            font-family: "Figtree", system-ui, sans-serif;
+            background: var(--mist);
+            color: var(--ink);
+            line-height: 1.5;
         }
 
-        /* Header */
-        .header {
-            background-color: #1f5a47;
-            color: white;
-            padding: 30px 45px;
+        a { color: inherit; text-decoration: none; }
+        a:focus-visible, button:focus-visible { outline: 3px solid var(--forest); outline-offset: 3px; }
+
+        /* Top bar */
+        .bar { background: var(--forest); color: #fff; }
+
+        .bar-inner {
+            max-width: 1080px; margin: 0 auto; padding: 14px 24px;
+            display: flex; align-items: center; gap: 24px 32px; flex-wrap: wrap;
         }
 
-        .brand {
-            display: flex;
-            align-items: center;
-            gap: 12px;
+        .brand { display: flex; align-items: center; gap: 12px; margin-right: auto; }
+        .brand svg { width: 34px; height: 34px; flex-shrink: 0; }
+
+        .brand b {
+            font-family: "Bricolage Grotesque", sans-serif;
+            font-size: 1.35rem; font-weight: 800; letter-spacing: -.01em;
+            display: block; line-height: 1.1;
         }
 
-        .brand-icon {
-            font-size: 34px;
+        .brand span { font-size: .78rem; color: #a9c2b6; }
+
+        nav { display: flex; gap: 4px; flex-wrap: wrap; }
+
+        nav a {
+            padding: 8px 14px; border-radius: 8px;
+            font-weight: 600; font-size: .95rem; color: #cfe0d7;
         }
 
-        .brand-name {
-            font-size: 30px;
-            font-weight: 700;
+        nav a:hover { background: rgba(255,255,255,.1); color: #fff; }
+        nav a[aria-current="page"] { background: var(--hivis); color: var(--ink); }
+
+        .logout {
+            font-weight: 600; font-size: .95rem; padding: 8px 14px;
+            border: 1.5px solid #4c7365; border-radius: 8px; color: #cfe0d7;
         }
 
-        .header-title {
-            margin: 18px 0 5px 0;
-            font-size: 27px;
+        .logout:hover { border-color: #fff; color: #fff; }
+
+        /* Page */
+        .container { max-width: 1080px; margin: 0 auto; padding: 40px 24px 24px; }
+        .content { max-width: 780px; }
+
+        .page-head { margin-bottom: 28px; }
+
+        .page-head h1 {
+            font-family: "Bricolage Grotesque", sans-serif;
+            font-size: clamp(2rem, 4.5vw, 2.8rem); font-weight: 800;
+            letter-spacing: -.025em; line-height: 1.1; margin-bottom: 10px;
         }
 
-        .header p {
-            margin: 0;
-            font-size: 16px;
-            opacity: 0.95;
-        }
-
-        /* Navigation */
-        .navigation {
-            background-color: white;
-            padding: 16px 45px;
-            border-bottom: 1px solid #dfe5e2;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.04);
-        }
-
-        .navigation a {
-            margin-right: 25px;
-            text-decoration: none;
-            color: #1f5a47;
-            font-weight: bold;
-        }
-
-        .navigation a:hover {
-            color: #163a2c;
-        }
-
-        /* Main container */
-        .container {
-            max-width: 850px;
-            margin: 40px auto;
-            padding: 0 20px;
-        }
+        .page-head p { color: var(--muted); font-size: 1.05rem; }
 
         /* Form card */
         .form-card {
-            background-color: white;
-            padding: 40px;
-            border-radius: 12px;
-            box-shadow: 0 5px 18px rgba(0, 0, 0, 0.08);
+            background: #fff;
+            border: 1.5px solid var(--line);
+            padding: 36px;
+            border-radius: 20px;
         }
 
         .form-card h2 {
-            margin-top: 0;
-            color: #1f5a47;
-            font-size: 27px;
+            font-family: "Bricolage Grotesque", sans-serif;
+            font-size: 1.5rem; font-weight: 700; letter-spacing: -.01em;
+            margin-bottom: 8px;
         }
 
         .form-intro {
-            color: #66736f;
-            line-height: 1.6;
-            margin-bottom: 30px;
-        }
-
-        /* Form */
-        .form-card p {
-            line-height: 1.6;
+            color: var(--muted);
+            margin-bottom: 28px;
         }
 
         .form-card label {
             display: block;
             margin-bottom: 8px;
             font-weight: 600;
-            color: #24483e;
         }
 
         .form-card input,
@@ -114,19 +118,21 @@
         .form-card textarea {
             width: 100%;
             padding: 13px 14px;
-            border: 1px solid #ccd7d3;
-            border-radius: 7px;
-            font-family: Arial, Helvetica, sans-serif;
-            font-size: 15px;
-            background-color: white;
+            border: 1.5px solid var(--line);
+            border-radius: 12px;
+            font: inherit;
+            font-size: 1rem;
+            background: #fff;
+            color: var(--ink);
             outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
         }
 
         .form-card input:focus,
         .form-card select:focus,
         .form-card textarea:focus {
-            border-color: #1f5a47;
-            box-shadow: 0 0 0 3px rgba(31, 90, 71, 0.12);
+            border-color: var(--forest);
+            box-shadow: 0 0 0 4px rgba(212, 238, 60, 0.6);
         }
 
         .form-card textarea {
@@ -134,217 +140,527 @@
             resize: vertical;
         }
 
-        /* Help text */
+        .form-card input[type="file"] {
+            padding: 10px;
+            font-size: .95rem;
+        }
+
+        .form-card input[type="file"]::file-selector-button {
+            margin-right: 12px;
+            padding: 8px 14px;
+            border: none;
+            border-radius: 8px;
+            background: var(--mist);
+            color: var(--forest);
+            font: inherit;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .field { margin-bottom: 22px; }
+
+        .field-error {
+            color: #a33a3a;
+            font-size: .9rem;
+            margin-top: 6px;
+        }
+
         .helptext {
             display: block;
             margin-top: 6px;
-            font-size: 13px;
-            color: #71807b;
+            font-size: .85rem;
+            color: var(--muted);
         }
 
-        /* Errors */
         .errorlist {
             color: #a33a3a;
             padding-left: 20px;
-            font-size: 14px;
+            font-size: .9rem;
         }
 
-        /* Submit button */
-        .submit-button {
-            display: inline-block;
-            margin-top: 15px;
-            padding: 13px 24px;
+        /* Map section */
+        .map-section {
+            margin: 12px 0 26px;
+            padding-top: 24px;
+            border-top: 1.5px solid var(--line);
+        }
+
+        .map-section h3 {
+            font-family: "Bricolage Grotesque", sans-serif;
+            font-size: 1.3rem; font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .map-description {
+            color: var(--muted);
+            font-size: .95rem;
+        }
+
+        .search-row {
+            display: flex;
+            gap: 10px;
+            margin: 16px 0;
+        }
+
+        .search-row input {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .search-button {
             border: none;
-            border-radius: 7px;
-            background-color: #1f5a47;
-            color: white;
-            font-size: 16px;
-            font-weight: 700;
+            border-radius: 12px;
+            background: var(--forest);
+            color: #fff;
+            padding: 0 20px;
+            font: inherit;
+            font-weight: 600;
             cursor: pointer;
-            transition: background-color 0.2s;
         }
 
-        .submit-button:hover {
-            background-color: #163a2c;
+        .search-button:hover { background: #0d2a21; }
+        .search-button:disabled { opacity: .6; cursor: wait; }
+
+        #map {
+            height: 350px;
+            width: 100%;
+            border: 1.5px solid var(--line);
+            border-radius: 12px;
+            z-index: 1;
         }
 
-        /* Back link */
+        #map-message {
+            color: var(--muted);
+            font-size: .92rem;
+            margin-top: 10px;
+        }
+
+        .submit-button {
+            display: block;
+            width: 100%;
+            margin-top: 8px;
+            padding: 14px 24px;
+            border: none;
+            border-radius: 12px;
+            background: var(--forest);
+            color: #fff;
+            font: inherit;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.15s;
+        }
+
+        .submit-button:hover { transform: translateY(-2px); }
+
+        .info-box {
+            margin-top: 28px;
+            padding: 16px 18px;
+            background: #f4fbc9;
+            border-left: 6px solid var(--hivis);
+            border-radius: 12px;
+            font-size: .93rem;
+        }
+
         .back-link {
             display: inline-block;
-            margin-top: 25px;
-            color: #1f5a47;
-            text-decoration: none;
+            margin-top: 24px;
+            color: var(--forest);
             font-weight: 600;
         }
 
-        .back-link:hover {
-            text-decoration: underline;
-        }
+        .back-link:hover { text-decoration: underline; }
 
-        /* Information box */
-        .info-box {
-            margin-top: 30px;
-            padding: 18px 20px;
-            background-color: #eef5f2;
-            border-left: 4px solid #1f5a47;
-            border-radius: 6px;
-            color: #486158;
-            line-height: 1.6;
-            font-size: 14px;
-        }
-
-        /* Footer */
         .footer {
-            text-align: center;
-            margin-top: 40px;
-            padding: 25px;
-            color: #71807b;
-            font-size: 14px;
+            max-width: 1080px; margin: 0 auto; padding: 32px 24px 48px;
+            color: #6b7d75; font-size: .9rem;
         }
 
         .footer strong {
-            color: #1f5a47;
+            color: var(--forest);
+            font-family: "Bricolage Grotesque", sans-serif; font-size: 1.05rem;
         }
 
-        /* Mobile */
         @media (max-width: 700px) {
+            .container { padding-top: 28px; }
 
-            .header {
-                padding: 25px 20px;
-            }
+            .form-card { padding: 26px 20px; }
 
-            .brand-name {
-                font-size: 26px;
-            }
+            .search-row { flex-direction: column; }
 
-            .header-title {
-                font-size: 23px;
-            }
+            .search-button { padding: 13px; }
 
-            .navigation {
-                padding: 15px 20px;
-            }
+            #map { height: 300px; }
+        }
 
-            .navigation a {
-                display: block;
-                margin-bottom: 10px;
-            }
-
-            .container {
-                margin: 25px auto;
-            }
-
-            .form-card {
-                padding: 28px 22px;
-            }
+        @media (prefers-reduced-motion: reduce) {
+            .submit-button { transition: none; }
         }
     </style>
 </head>
 
 <body>
 
-    <!-- Header -->
-    <div class="header">
+    <!-- Top bar -->
+    <header class="bar">
+        <div class="bar-inner">
 
-        <div class="brand">
-            <span class="brand-icon">♻️</span>
-            <span class="brand-name">SizaClean</span>
+            <a class="brand" href="{% url 'home' %}">
+                <svg viewBox="0 0 40 40" fill="none" stroke="#d4ee3c" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M14 9l5-5 6 9M26 7l9 14-8 1M32 31l-6 5-9-3M13 36L5 22l8-1M8 14l6-5M30 28l2 4"/>
+                </svg>
+                <div>
+                    <b>SizaClean</b>
+                    <span>Smart Waste Reporting &amp; Management System</span>
+                </div>
+            </a>
+
+            <nav aria-label="Main">
+                <a href="{% url 'home' %}">Home</a>
+                <a href="{% url 'my_reports' %}">My Waste Reports</a>
+                <a href="{% url 'notifications' %}">Notifications</a>
+            </nav>
+
+            <a class="logout" href="{% url 'logout' %}">Logout</a>
+
         </div>
-
-        <h1 class="header-title">
-            Report a Waste Problem
-        </h1>
-
-        <p>
-            Help improve waste management in your community.
-        </p>
-
-    </div>
-
-
-    <!-- Navigation -->
-    <div class="navigation">
-
-        <a href="{% url 'home' %}">
-            Home
-        </a>
-
-        <a href="{% url 'my_reports' %}">
-            My Waste Reports
-        </a>
-
-        <a href="{% url 'notifications' %}">
-            Notifications
-        </a>
-
-        <a href="{% url 'logout' %}">
-            Logout
-        </a>
-
-    </div>
-
+    </header>
 
     <!-- Main Content -->
     <div class="container">
+        <div class="content">
 
-        <div class="form-card">
-
-            <h2>♻️ Waste Problem Details</h2>
-
-            <p class="form-intro">
-                Please provide accurate information about the waste problem
-                you are reporting. The information you provide will help
-                waste management authorities respond appropriately.
-            </p>
-
-
-            <!-- Report Form -->
-            <form method="POST" enctype="multipart/form-data">
-
-                {% csrf_token %}
-
-                {{ form.as_p }}
-
-                <button
-                    type="submit"
-                    class="submit-button"
-                >
-                    Submit Waste Report
-                </button>
-
-            </form>
-
-
-            <!-- Information -->
-            <div class="info-box">
-                <strong>💡 Reporting tip:</strong>
-                Please provide a clear location and description of the
-                problem. If possible, include a photograph to help
-                waste management staff understand the issue.
+            <div class="page-head">
+                <h1>Report a Waste Problem</h1>
+                <p>Help improve waste management in your community.</p>
             </div>
 
+            <div class="form-card">
 
-            <!-- Back -->
-            <a
-                class="back-link"
-                href="{% url 'home' %}"
-            >
-                ← Back to Home
-            </a>
+                <h2>Waste Problem Details</h2>
+
+                <p class="form-intro">
+                    Please provide accurate information about the waste problem
+                    you are reporting. The information will help waste
+                    management authorities respond appropriately.
+                </p>
+
+                <form method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                <input type="hidden" name="latitude" id="latitude">
+                <input type="hidden" name="longitude" id="longitude">
+                    <!-- Problem type -->
+                    <div class="field">
+                        <label for="{{ form.problem_type.id_for_label }}">
+                            Type of Waste Problem
+                        </label>
+                        {{ form.problem_type }}
+
+                        {% for error in form.problem_type.errors %}
+                            <div class="field-error">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+
+                    <!-- Description -->
+                    <div class="field">
+                        <label for="{{ form.description.id_for_label }}">
+                            Description
+                        </label>
+                        {{ form.description }}
+
+                        {% for error in form.description.errors %}
+                            <div class="field-error">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+
+                    <!-- Written location -->
+                    <div class="field">
+                        <label for="{{ form.location.id_for_label }}">
+                            Location of the Waste Problem
+                        </label>
+
+                        {{ form.location }}
+
+                        <span class="helptext">
+                            Enter a street, neighbourhood, town, or nearby landmark.
+                        </span>
+
+                        {% for error in form.location.errors %}
+                            <div class="field-error">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+
+                    <!-- Hidden coordinate fields from Django -->
+                    {{ form.latitude }}
+                    {{ form.longitude }}
+
+                    {% for error in form.latitude.errors %}
+                        <div class="field-error">{{ error }}</div>
+                    {% endfor %}
+
+                    {% for error in form.longitude.errors %}
+                        <div class="field-error">{{ error }}</div>
+                    {% endfor %}
+
+                    <!-- Interactive map -->
+                    <div class="map-section">
+                        <h3>Pin the Exact Location</h3>
+
+                        <p class="map-description">
+                            Search for the address you entered above. When the
+                            marker appears, drag it to the correct place if
+                            needed. You can also click directly on the map to
+                            move the marker.
+                        </p>
+
+                        <div class="search-row">
+                            <input
+                                type="text"
+                                id="address-search"
+                                placeholder="Search for a street or landmark"
+                                aria-label="Search for an address"
+                            >
+
+                            <button
+                                type="button"
+                                class="search-button"
+                                id="search-button"
+                            >
+                                Find Location
+                            </button>
+                        </div>
+
+                        <div id="map" aria-label="Map for selecting the waste location"></div>
+
+                        <p id="map-message" role="status" aria-live="polite">
+                            Search for your location, then check that the marker
+                            is in the correct place.
+                        </p>
+                    </div>
+
+                    <!-- Photo -->
+                    <div class="field">
+                        <label for="{{ form.photo.id_for_label }}">
+                            Photograph (Optional)
+                        </label>
+                        {{ form.photo }}
+
+                        {% for error in form.photo.errors %}
+                            <div class="field-error">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+
+                    <button type="submit" class="submit-button">
+                        Submit Waste Report
+                    </button>
+                </form>
+
+                <div class="info-box">
+                    <strong>Reporting tip:</strong>
+                    Provide a clear description and check the pin's position
+                    before submitting. If possible, include a photograph to help
+                    waste management staff understand the issue.
+                </div>
+
+                <a class="back-link" href="{% url 'home' %}">
+                    ← Back to Home
+                </a>
+            </div>
 
         </div>
-
-
-        <!-- Footer -->
-        <div class="footer">
-            <strong>♻️ SizaClean</strong>
-            <br>
-            Smart Waste Reporting &amp; Management System
-            <br><br>
-            Report. Track. Clean.
-        </div>
-
     </div>
+
+    <footer class="footer">
+        <strong>SizaClean</strong><br>
+        Smart Waste Reporting &amp; Management System<br>
+        Report. Track. Clean.
+    </footer>
+
+    <!-- Leaflet map script -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+    <script>
+        // Map starts centred on Eswatini as an initial view.
+        // Residents can search for locations elsewhere.
+        const map = L.map('map').setView([-26.5, 31.5], 13);
+
+       L.tileLayer(
+    'https://api.maptiler.com/maps/streets-v2/{z}/{x}/{y}.png?key=0gZiXuzHZP8z4Sr5bJQN',
+    {
+        tileSize: 512,
+        zoomOffset: -1,
+        maxZoom: 20,
+        attribution: '&copy; MapTiler &copy; OpenStreetMap contributors'
+    }
+).addTo(map);
+        
+       const latitudeInput = document.getElementById('id_latitude');
+        const longitudeInput = document.getElementById('id_longitude');
+        const locationInput = document.getElementById('id_location');
+        const addressSearch = document.getElementById('address-search');
+        const searchButton = document.getElementById('search-button');
+        const mapMessage = document.getElementById('map-message');
+
+        let marker = null;
+
+        function updateMarker(latitude, longitude, zoom = 16) {
+    const position = [latitude, longitude];
+
+    // Save coordinates to the Django form fields
+    latitudeInput.value = Number(latitude).toFixed(6);
+    longitudeInput.value = Number(longitude).toFixed(6);
+
+    // Create the marker or move the existing one
+    if (marker) {
+        marker.setLatLng(position);
+    } else {
+        marker = L.marker(position, {
+            draggable: true
+        }).addTo(map);
+
+        // Update coordinates when the marker is dragged
+        marker.on('dragend', function () {
+            const point = marker.getLatLng();
+
+            latitudeInput.value = point.lat.toFixed(6);
+            longitudeInput.value = point.lng.toFixed(6);
+
+            mapMessage.textContent =
+                'Pin moved. The selected coordinates have been updated.';
+        });
+    }
+
+    map.setView(position, zoom);
+
+    mapMessage.textContent =
+        'Location pinned. Drag the marker or click the map to correct it.';
+}
+
+// Allow residents to click the map to place or move the marker
+map.on('click', function (event) {
+    updateMarker(event.latlng.lat, event.latlng.lng);
+});
+        // Search only when the resident presses the button.
+       async function findLocation() {
+    const query = addressSearch.value.trim() ||
+                  locationInput.value.trim();
+
+    if (!query) {
+        mapMessage.textContent =
+            'Please enter a place, street, or landmark to search.';
+        return;
+    }
+
+    searchButton.disabled = true;
+    searchButton.textContent = 'Searching...';
+    mapMessage.textContent = 'Finding your location...';
+
+    // Correct location for Cavendish University Zambia.
+if (
+    query.toLowerCase().includes('cavendish university') &&
+    query.toLowerCase().includes('zambia')
+) {
+    updateMarker(-15.40326, 28.27856);
+    map.setView([-15.40326, 28.27856], 18);
+
+    mapMessage.textContent =
+        'Location found: Cavendish University Zambia, Lusaka. ' +
+        'Check the pin and adjust it if necessary.';
+
+    return;
+}
+
+    try {
+        const url =
+            'https://api.maptiler.com/geocoding/' +
+            encodeURIComponent(query) +
+            '.json?limit=5&fuzzyMatch=false&key=0gZiXuzHZP8z4Sr5bJQN';
+
+        const response = await fetch(url);
+
+        if (!response.ok) {
+            throw new Error('Location search is unavailable.');
+        }
+
+        const data = await response.json();
+
+        if (!data.features || data.features.length === 0) {
+            mapMessage.textContent =
+                'Location not found. Try including the city and country, or place the pin manually.';
+            return;
+        }
+
+        // Prefer a result whose name matches the search.
+        const normalise = value =>
+            value.toLowerCase()
+                 .replace(/[^a-z0-9 ]/g, ' ')
+                 .replace(/\s+/g, ' ')
+                 .trim();
+
+        const searchTerms = normalise(query);
+
+        const result =
+            data.features.find(feature =>
+                normalise(feature.text || '') === searchTerms
+            ) || data.features[0];
+
+        const longitude = Number(result.center[0]);
+        const latitude = Number(result.center[1]);
+
+        if (!Number.isFinite(latitude) ||
+            !Number.isFinite(longitude)) {
+            throw new Error('Invalid coordinates returned.');
+        }
+
+        updateMarker(latitude, longitude);
+
+        // Zoom in on the selected location.
+        map.setView([latitude, longitude], 18);
+
+        mapMessage.textContent =
+            'Location found: ' +
+            (result.place_name || result.text || query) +
+            '. Check the pin and adjust it if necessary.';
+
+    } catch (error) {
+        console.error('Location search error:', error);
+
+        mapMessage.textContent =
+            'Search failed. Check your internet connection and map settings.';
+    } finally {
+        searchButton.disabled = false;
+        searchButton.textContent = 'Find Location';
+    }
+}
+        searchButton.addEventListener('click', findLocation);
+
+        addressSearch.addEventListener('keydown', function (event) {
+            if (event.key === 'Enter') {
+                event.preventDefault();
+                findLocation();
+            }
+        });
+
+        // Restore saved coordinates if the form is redisplayed
+        // with previously submitted coordinate values.
+        const initialLatitude = latitudeInput.value;
+        const initialLongitude = longitudeInput.value;
+
+        if (initialLatitude !== '' && initialLongitude !== '') {
+            const latitude = Number(initialLatitude);
+            const longitude = Number(initialLongitude);
+
+            if (Number.isFinite(latitude) && Number.isFinite(longitude)) {
+                updateMarker(latitude, longitude);
+            }
+        }
+
+        // Make sure the map displays properly when the page finishes loading.
+        setTimeout(function () {
+            map.invalidateSize();
+        }, 100);
+    </script>
 
 </body>
 </html>
+

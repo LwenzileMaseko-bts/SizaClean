@@ -3,527 +3,312 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SizaClean | Smart Waste Reporting &amp; Management System</title>
 
-    <title>SizaClean | Smart Waste Reporting & Management System</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700;800&family=Figtree:wght@400;600&display=swap" rel="stylesheet">
 
     <style>
-        * {
-            box-sizing: border-box;
+        :root {
+            --ink: #10231c;
+            --forest: #14392e;
+            --hivis: #d4ee3c;
+            --mist: #eef2ef;
+            --line: #d5ddd8;
+            --muted: #4d5f57;
         }
-
+        * { box-sizing: border-box; margin: 0; }
         body {
-            margin: 0;
-            font-family: Arial, Helvetica, sans-serif;
-            background-color: #f3f6f5;
-            color: #333;
+            font-family: "Figtree", system-ui, sans-serif;
+            background: var(--mist);
+            color: var(--ink);
+            line-height: 1.5;
         }
+        a { color: inherit; text-decoration: none; }
+        a:focus-visible { outline: 3px solid var(--hivis); outline-offset: 3px; }
 
-        /* Header */
-        .header {
-            background-color: #1f5a47;
-            color: white;
-            padding: 32px 45px;
+        /* Top bar */
+        .bar { background: var(--forest); color: #fff; }
+        .bar-inner {
+            max-width: 1080px; margin: 0 auto; padding: 14px 24px;
+            display: flex; align-items: center; gap: 24px 32px; flex-wrap: wrap;
         }
+        .brand { display: flex; align-items: center; gap: 12px; margin-right: auto; }
+        .brand svg { width: 34px; height: 34px; flex-shrink: 0; }
+        .brand b {
+            font-family: "Bricolage Grotesque", sans-serif;
+            font-size: 1.35rem; font-weight: 800; letter-spacing: -.01em;
+            display: block; line-height: 1.1;
+        }
+        .brand span { font-size: .78rem; color: #a9c2b6; }
+        nav { display: flex; gap: 4px; flex-wrap: wrap; }
+        nav a { padding: 8px 14px; border-radius: 8px; font-weight: 600; font-size: .95rem; color: #cfe0d7; }
+        nav a:hover { background: rgba(255,255,255,.1); color: #fff; }
+        nav a[aria-current="page"] { background: var(--hivis); color: var(--ink); }
+        .logout {
+            font-weight: 600; font-size: .95rem; padding: 8px 14px;
+            border: 1.5px solid #4c7365; border-radius: 8px; color: #cfe0d7;
+        }
+        .logout:hover { border-color: #fff; color: #fff; }
 
-        .brand {
-            display: flex;
-            align-items: center;
-            gap: 12px;
+        /* Page */
+        main { max-width: 1080px; margin: 0 auto; padding: 48px 24px 24px; }
+        .greeting { margin-bottom: 36px; max-width: 640px; }
+        .greeting h1 {
+            font-family: "Bricolage Grotesque", sans-serif;
+            font-size: clamp(2.2rem, 5vw, 3.4rem); font-weight: 800;
+            letter-spacing: -.025em; line-height: 1.05; margin-bottom: 14px;
         }
+        .greeting p { color: var(--muted); font-size: 1.08rem; }
+        .greeting .btn-row { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 28px; }
 
-        .brand-icon {
-            font-size: 38px;
+        /* Action tiles */
+        .actions { display: grid; grid-template-columns: 1.4fr 1fr; gap: 20px; }
+        .actions-four { grid-template-columns: 1fr 1fr; }
+        .tile {
+            display: flex; flex-direction: column; justify-content: space-between; gap: 32px;
+            min-height: 250px; padding: 28px; border-radius: 20px;
         }
+        .tile h2 {
+            font-family: "Bricolage Grotesque", sans-serif;
+            font-size: 1.6rem; font-weight: 700; letter-spacing: -.01em;
+            margin: 18px 0 8px; line-height: 1.15;
+        }
+        .tile p { max-width: 36ch; }
+        .icon { width: 48px; height: 48px; border-radius: 14px; display: grid; place-items: center; }
+        .icon svg { width: 26px; height: 26px; }
 
-        .header h1 {
-            margin: 0;
-            font-size: 34px;
-            font-weight: 700;
-        }
+        .tile.primary { background: var(--hivis); }
+        .tile.primary .icon { background: var(--forest); color: var(--hivis); }
+        .tile.secondary { background: #fff; border: 1.5px solid var(--line); }
+        .tile.secondary .icon { background: var(--mist); color: var(--forest); }
+        .tile.secondary p { color: var(--muted); }
 
-        .header p {
-            margin: 8px 0 0 50px;
-            font-size: 16px;
-            opacity: 0.95;
+        .btn {
+            align-self: flex-start; display: inline-block;
+            padding: 13px 22px; border-radius: 12px;
+            background: var(--forest); color: #fff; font-weight: 600;
+            transition: transform .15s;
         }
-
-        /* Navigation */
-        .navigation {
-            background-color: white;
-            padding: 16px 45px;
-            border-bottom: 1px solid #dfe5e2;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.04);
-        }
-
-        .navigation a {
-            margin-right: 25px;
-            text-decoration: none;
-            color: #1f5a47;
-            font-weight: bold;
-        }
-
-        .navigation a:hover {
-            color: #163a2c;
-        }
-
-        /* Main container */
-        .container {
-            max-width: 1050px;
-            margin: 40px auto;
-            padding: 0 20px;
-        }
-
-        /* Welcome card */
-        .welcome-card {
-            background-color: white;
-            padding: 38px;
-            border-radius: 12px;
-            box-shadow: 0 5px 18px rgba(0, 0, 0, 0.08);
-            margin-bottom: 30px;
-            border-left: 5px solid #1f5a47;
-        }
-
-        .welcome-card h2 {
-            margin-top: 0;
-            color: #1f5a47;
-            font-size: 27px;
-        }
-
-        .welcome-card p {
-            line-height: 1.7;
-            color: #555;
-        }
-
-        /* Action cards */
-        .actions {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 22px;
-        }
-
-        .action-card {
-            background-color: white;
-            padding: 28px;
-            border-radius: 12px;
-            box-shadow: 0 5px 18px rgba(0, 0, 0, 0.07);
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-
-        .action-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 22px rgba(0, 0, 0, 0.10);
-        }
-
-        .action-card h3 {
-            margin-top: 0;
-            color: #1f5a47;
-            font-size: 21px;
-        }
-
-        .action-card p {
-            line-height: 1.6;
-            color: #555;
-        }
-
-        /* Buttons */
-        .action-button {
-            display: inline-block;
-            margin-top: 12px;
-            padding: 12px 20px;
-            background-color: #1f5a47;
-            color: white;
-            text-decoration: none;
-            border-radius: 7px;
-            font-weight: bold;
-            transition: background-color 0.2s;
-        }
-
-        .action-button:hover {
-            background-color: #163a2c;
-        }
-
-        /* Logout */
-        .logout-button {
-            display: inline-block;
-            margin-top: 28px;
-            color: #1f5a47;
-            font-weight: bold;
-            text-decoration: none;
-        }
-
-        .logout-button:hover {
-            text-decoration: underline;
-        }
+        .btn:hover { transform: translateY(-2px); }
+        .secondary .btn { background: var(--ink); }
+        .btn-ghost { background: transparent; color: var(--forest); border: 1.5px solid var(--forest); }
 
         /* Footer */
-        .footer {
-            text-align: center;
-            margin-top: 45px;
-            padding: 25px 20px;
-            color: #71807b;
-            font-size: 14px;
+        .footer { max-width: 1080px; margin: 0 auto; padding: 40px 24px 48px; color: #6b7d75; font-size: .9rem; }
+        .footer strong { color: var(--forest); font-family: "Bricolage Grotesque", sans-serif; font-size: 1.05rem; }
+
+        @media (max-width: 760px) {
+            .actions, .actions-four { grid-template-columns: 1fr; }
+            .tile { min-height: 0; }
+            main { padding-top: 32px; }
         }
-
-        .footer strong {
-            color: #1f5a47;
-        }
-
-        /* Mobile */
-        @media (max-width: 700px) {
-
-            .header {
-                padding: 25px 20px;
-            }
-
-            .brand-icon {
-                font-size: 30px;
-            }
-
-            .header h1 {
-                font-size: 27px;
-            }
-
-            .header p {
-                margin-left: 42px;
-                font-size: 14px;
-            }
-
-            .navigation {
-                padding: 15px 20px;
-            }
-
-            .navigation a {
-                display: block;
-                margin-bottom: 10px;
-            }
-
-            .container {
-                margin: 25px auto;
-            }
-
-            .actions {
-                grid-template-columns: 1fr;
-            }
-
-            .welcome-card {
-                padding: 28px;
-            }
-        }
+        @media (prefers-reduced-motion: reduce) { .btn { transition: none; } }
     </style>
 </head>
 
 <body>
 
-    <!-- Header -->
-    <div class="header">
+    <!-- Top bar -->
+    <header class="bar">
+        <div class="bar-inner">
 
-        <div class="brand">
-            <span class="brand-icon">♻️</span>
-            <h1>SizaClean</h1>
-        </div>
-
-        <p>
-            Smart Waste Reporting &amp; Management System
-        </p>
-
-    </div>
-
-
-    <!-- Navigation -->
-    <div class="navigation">
-
-        {% if user.is_authenticated %}
-
-            <a href="{% url 'home' %}">Home</a>
-
-            {% if user.userprofile.role == 'resident' %}
-
-                <a href="{% url 'submit_report' %}">
-                    Submit Waste Report
-                </a>
-
-                <a href="{% url 'my_reports' %}">
-                    My Waste Reports
-                </a>
-
-            {% elif user.userprofile.role == 'collector' %}
-
-                <a href="{% url 'collector_dashboard' %}">
-                    Collector Dashboard
-                </a>
-
-            {% elif user.userprofile.role == 'authority' %}
-
-                <a href="{% url 'authority_dashboard' %}">
-                    Authority Dashboard
-                </a>
-
-            {% endif %}
-
-            <a href="{% url 'notifications' %}">
-                Notifications
+            <a class="brand" href="{% url 'home' %}">
+                <svg viewBox="0 0 40 40" fill="none" stroke="#d4ee3c" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M14 9l5-5 6 9M26 7l9 14-8 1M32 31l-6 5-9-3M13 36L5 22l8-1M8 14l6-5M30 28l2 4"/>
+                </svg>
+                <div>
+                    <b>SizaClean</b>
+                    <span>Smart Waste Reporting &amp; Management System</span>
+                </div>
             </a>
 
-        {% else %}
+            <nav aria-label="Main">
+                {% if user.is_authenticated %}
 
-            <a href="{% url 'login' %}">Login</a>
-            <a href="{% url 'register' %}">Register</a>
+                    <a href="{% url 'home' %}" aria-current="page">Home</a>
 
-        {% endif %}
+                    {% if user.userprofile.role == 'resident' %}
+                        <a href="{% url 'submit_report' %}">Submit Waste Report</a>
+                        <a href="{% url 'my_reports' %}">My Waste Reports</a>
+                    {% elif user.userprofile.role == 'collector' %}
+                        <a href="{% url 'collector_dashboard' %}">Collector Dashboard</a>
+                    {% elif user.userprofile.role == 'authority' %}
+                        <a href="{% url 'authority_dashboard' %}">Authority Dashboard</a>
+                    {% endif %}
 
-    </div>
+                    <a href="{% url 'notifications' %}">Notifications</a>
+
+                {% else %}
+
+                    <a href="{% url 'login' %}">Login</a>
+                    <a href="{% url 'register' %}">Register</a>
+
+                {% endif %}
+            </nav>
+
+            {% if user.is_authenticated %}
+                <a class="logout" href="{% url 'logout' %}">Logout</a>
+            {% endif %}
+
+        </div>
+    </header>
 
 
-    <!-- Main Content -->
-    <div class="container">
+    <main>
 
         {% if user.is_authenticated %}
 
             <!-- Welcome -->
-            <div class="welcome-card">
+            <section class="greeting">
+                <h1>Welcome, {{ user.username }}</h1>
 
-                <h2>
-                    Welcome to SizaClean, {{ user.username }}!
-                </h2>
+                {% if user.userprofile.role == 'resident' %}
+                    <p>
+                        Report waste collection problems in your community and
+                        track each report from submission to resolution.
+                    </p>
+                {% elif user.userprofile.role == 'collector' %}
+                    <p>
+                        Open your dashboard to see assigned waste reports,
+                        update their progress, and mark finished ones as resolved.
+                    </p>
+                {% elif user.userprofile.role == 'authority' %}
+                    <p>
+                        Monitor waste reports, assign them to collectors,
+                        filter them, and follow their progress.
+                    </p>
+                {% endif %}
+            </section>
+
+
+            <!-- Action tiles -->
+            <section class="actions {% if user.userprofile.role == 'resident' %}actions-four{% endif %}">
 
                 {% if user.userprofile.role == 'resident' %}
 
-                    <p>
-                        Use <strong>SizaClean</strong> to report waste collection
-                        problems in your community and track the progress of
-                        your reports from submission to resolution.
-                    </p>
+                    <article class="tile primary">
+                        <div>
+                            <div class="icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8"/></svg>
+                            </div>
+                            <h2>Report a waste problem</h2>
+                            <p>Report missed collections, overflowing bins, or illegal dumping in your community.</p>
+                        </div>
+                        <a class="btn" href="{% url 'submit_report' %}">Submit report</a>
+                    </article>
+
+                    <article class="tile secondary">
+                        <div>
+                            <div class="icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="6" y="4" width="12" height="17" rx="2"/><path d="M9 4h6v3H9zM9 12h6M9 16h6"/></svg>
+                            </div>
+                            <h2>Track my reports</h2>
+                            <p>View your submitted reports and check their current status.</p>
+                        </div>
+                        <a class="btn" href="{% url 'my_reports' %}">View my reports</a>
+                    </article>
+
+                    <article class="tile secondary">
+                        <div>
+                            <div class="icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 8a6 6 0 0112 0c0 7 3 9 3 9H3s3-2 3-9M10.3 21a2 2 0 003.4 0"/></svg>
+                            </div>
+                            <h2>Notifications</h2>
+                            <p>Check updates about your waste reports and status changes.</p>
+                        </div>
+                        <a class="btn" href="{% url 'notifications' %}">View notifications</a>
+                    </article>
+
+                    <article class="tile secondary">
+                        <div>
+                            <div class="icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18"/></svg>
+                            </div>
+                            <h2>Community waste management</h2>
+                            <p>Help improve waste management in your community by reporting problems promptly.</p>
+                        </div>
+                    </article>
 
                 {% elif user.userprofile.role == 'collector' %}
 
-                    <p>
-                        Use your Collector Dashboard to view assigned waste
-                        reports, update their progress, and mark completed
-                        reports as resolved.
-                    </p>
+                    <article class="tile primary">
+                        <div>
+                            <div class="icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 6h13v10H1zM14 9h5l4 4v3h-9z"/><circle cx="6" cy="18" r="2"/><circle cx="18" cy="18" r="2"/></svg>
+                            </div>
+                            <h2>My assigned reports</h2>
+                            <p>View waste reports assigned to you and update their progress.</p>
+                        </div>
+                        <a class="btn" href="{% url 'collector_dashboard' %}">Collector Dashboard</a>
+                    </article>
+
+                    <article class="tile secondary">
+                        <div>
+                            <div class="icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 8a6 6 0 0112 0c0 7 3 9 3 9H3s3-2 3-9M10.3 21a2 2 0 003.4 0"/></svg>
+                            </div>
+                            <h2>Notifications</h2>
+                            <p>Check notifications about newly assigned waste reports.</p>
+                        </div>
+                        <a class="btn" href="{% url 'notifications' %}">View notifications</a>
+                    </article>
 
                 {% elif user.userprofile.role == 'authority' %}
 
-                    <p>
-                        Use your Authority Dashboard to monitor waste reports,
-                        assign reports to waste collectors, filter reports,
-                        and monitor their progress.
-                    </p>
+                    <article class="tile primary">
+                        <div>
+                            <div class="icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 21h18M5 21V10l7-5 7 5v11M9 21v-6h6v6"/></svg>
+                            </div>
+                            <h2>Manage waste reports</h2>
+                            <p>View, filter, assign, and monitor waste collection reports.</p>
+                        </div>
+                        <a class="btn" href="{% url 'authority_dashboard' %}">Authority Dashboard</a>
+                    </article>
+
+                    <article class="tile secondary">
+                        <div>
+                            <div class="icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 8a6 6 0 0112 0c0 7 3 9 3 9H3s3-2 3-9M10.3 21a2 2 0 003.4 0"/></svg>
+                            </div>
+                            <h2>Notifications</h2>
+                            <p>Check notifications about newly submitted waste reports.</p>
+                        </div>
+                        <a class="btn" href="{% url 'notifications' %}">View notifications</a>
+                    </article>
 
                 {% endif %}
 
-            </div>
-
-
-            <!-- Action Cards -->
-            <div class="actions">
-
-                {% if user.userprofile.role == 'resident' %}
-
-                    <div class="action-card">
-
-                        <h3>♻️ Report a Waste Problem</h3>
-
-                        <p>
-                            Report missed collections, overflowing bins,
-                            or illegal dumping in your community.
-                        </p>
-
-                        <a
-                            class="action-button"
-                            href="{% url 'submit_report' %}"
-                        >
-                            Submit Report
-                        </a>
-
-                    </div>
-
-
-                    <div class="action-card">
-
-                        <h3>📋 Track My Reports</h3>
-
-                        <p>
-                            View your submitted reports and check their
-                            current status.
-                        </p>
-
-                        <a
-                            class="action-button"
-                            href="{% url 'my_reports' %}"
-                        >
-                            View My Reports
-                        </a>
-
-                    </div>
-
-
-                    <div class="action-card">
-
-                        <h3>🔔 Notifications</h3>
-
-                        <p>
-                            Check updates about your waste reports
-                            and status changes.
-                        </p>
-
-                        <a
-                            class="action-button"
-                            href="{% url 'notifications' %}"
-                        >
-                            View Notifications
-                        </a>
-
-                    </div>
-
-
-                    <div class="action-card">
-
-                        <h3>🌍 Community Waste Management</h3>
-
-                        <p>
-                            Help improve waste management in your community
-                            by reporting problems promptly.
-                        </p>
-
-                    </div>
-
-
-                {% elif user.userprofile.role == 'collector' %}
-
-                    <div class="action-card">
-
-                        <h3>🚛 My Assigned Reports</h3>
-
-                        <p>
-                            View waste reports assigned to you and
-                            update their progress.
-                        </p>
-
-                        <a
-                            class="action-button"
-                            href="{% url 'collector_dashboard' %}"
-                        >
-                            Collector Dashboard
-                        </a>
-
-                    </div>
-
-
-                    <div class="action-card">
-
-                        <h3>🔔 Notifications</h3>
-
-                        <p>
-                            Check notifications about newly assigned
-                            waste reports.
-                        </p>
-
-                        <a
-                            class="action-button"
-                            href="{% url 'notifications' %}"
-                        >
-                            View Notifications
-                        </a>
-
-                    </div>
-
-
-                {% elif user.userprofile.role == 'authority' %}
-
-                    <div class="action-card">
-
-                        <h3>🏛️ Manage Waste Reports</h3>
-
-                        <p>
-                            View, filter, assign, and monitor waste
-                            collection reports.
-                        </p>
-
-                        <a
-                            class="action-button"
-                            href="{% url 'authority_dashboard' %}"
-                        >
-                            Authority Dashboard
-                        </a>
-
-                    </div>
-
-
-                    <div class="action-card">
-
-                        <h3>🔔 Notifications</h3>
-
-                        <p>
-                            Check notifications about newly submitted
-                            waste reports.
-                        </p>
-
-                        <a
-                            class="action-button"
-                            href="{% url 'notifications' %}"
-                        >
-                            View Notifications
-                        </a>
-
-                    </div>
-
-                {% endif %}
-
-            </div>
-
-
-            <!-- Logout -->
-            <a
-                class="logout-button"
-                href="{% url 'logout' %}"
-            >
-                Logout
-            </a>
-
+            </section>
 
         {% else %}
 
-            <!-- Logged-out Welcome -->
-            <div class="welcome-card">
-
-                <h2>♻️ Welcome to SizaClean</h2>
-
+            <!-- Logged-out welcome -->
+            <section class="greeting">
+                <h1>Welcome to SizaClean</h1>
                 <p>
-                    SizaClean is a smart waste reporting and management
-                    system that helps communities report waste problems,
-                    track progress, and improve waste collection services.
+                    SizaClean is a smart waste reporting and management system.
+                    Communities use it to report waste problems, track progress,
+                    and improve waste collection services.
                 </p>
-
-                <a
-                    class="action-button"
-                    href="{% url 'login' %}"
-                >
-                    Login
-                </a>
-
-                <a
-                    class="action-button"
-                    href="{% url 'register' %}"
-                >
-                    Register
-                </a>
-
-            </div>
+                <div class="btn-row">
+                    <a class="btn" href="{% url 'login' %}">Login</a>
+                    <a class="btn btn-ghost" href="{% url 'register' %}">Register</a>
+                </div>
+            </section>
 
         {% endif %}
 
+    </main>
 
-        <!-- Footer -->
-        <div class="footer">
-            <strong>♻️ SizaClean</strong>
-            <br>
-            Smart Waste Reporting &amp; Management System
-            <br><br>
-            Report. Track. Clean.
-        </div>
 
-    </div>
+    <!-- Footer -->
+    <footer class="footer">
+        <strong>SizaClean</strong><br>
+        Smart Waste Reporting &amp; Management System<br>
+        Report. Track. Clean.
+    </footer>
 
 </body>
 </html>

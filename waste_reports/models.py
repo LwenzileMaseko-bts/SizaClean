@@ -1,3 +1,4 @@
+
 from django.db import models
 from django.contrib.auth.models import User
 
@@ -43,7 +44,24 @@ class WasteReport(models.Model):
 
     description = models.TextField()
 
+    # Keep the resident's manually entered location
     location = models.CharField(max_length=255)
+
+    # Coordinates for the OpenStreetMap marker
+    # Optional so existing reports remain valid
+    latitude = models.DecimalField(
+        max_digits=9,
+        decimal_places=6,
+        blank=True,
+        null=True
+    )
+
+    longitude = models.DecimalField(
+        max_digits=9,
+        decimal_places=6,
+        blank=True,
+        null=True
+    )
 
     photo = models.ImageField(
         upload_to='waste_reports/',
@@ -70,7 +88,10 @@ class WasteReport(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f"{self.get_problem_type_display()} - {self.get_status_display()}"
+        return (
+            f"{self.get_problem_type_display()} - "
+            f"{self.get_status_display()}"
+        )
 
 
 class Notification(models.Model):
@@ -94,3 +115,4 @@ class Notification(models.Model):
 
     def __str__(self):
         return f"Notification for {self.recipient.username}"
+
