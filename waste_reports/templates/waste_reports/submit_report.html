@@ -480,9 +480,9 @@
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
     <script>
-        // Map starts centred on Eswatini as an initial view.
-        // Residents can search for locations elsewhere.
-        const map = L.map('map').setView([-26.5, 31.5], 13);
+        // Map starts centred on Zambia as an initial view.
+        // Searches are limited to Zambia (see findLocation below).
+        const map = L.map('map').setView([-13.5, 27.8], 6);
 
        L.tileLayer(
     'https://api.maptiler.com/maps/streets-v2/{z}/{x}/{y}.png?key=0gZiXuzHZP8z4Sr5bJQN',
@@ -574,7 +574,9 @@ if (
         const url =
             'https://api.maptiler.com/geocoding/' +
             encodeURIComponent(query) +
-            '.json?limit=5&fuzzyMatch=false&key=0gZiXuzHZP8z4Sr5bJQN';
+            '.json?limit=5&fuzzyMatch=false&country=zm' +
+            '&proximity=28.2833,-15.4167&language=en' +
+            '&key=0gZiXuzHZP8z4Sr5bJQN';
 
         const response = await fetch(url);
 

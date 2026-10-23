@@ -1,6 +1,7 @@
 
 from django.db import models
 from django.contrib.auth.models import User
+from django.utils import timezone
 
 
 class UserProfile(models.Model):
@@ -92,6 +93,33 @@ class WasteReport(models.Model):
             f"{self.get_problem_type_display()} - "
             f"{self.get_status_display()}"
         )
+       
+    @property
+    def priority_level(self):
+        if self.problem_type == 'illegal_dumping':
+            priority = 3
+        elif self.problem_type == 'overflowing_bin':
+            priority = 2
+        else:
+            priority = 1
+    
+        if self.status != 'resolved' and self.created_at:
+            days_waiting = (timezone.now() - self.created_at).days
+    
+            if days_waiting >= 7:
+                priority = 3
+            elif days_waiting >= 3:
+                priority = max(priority, 2)
+    
+        return {
+            1: 'low',
+            2: 'medium',
+            3: 'high',
+        }[priority]
+    
+    
+    def get_priority_display(self):
+        return self.priority_level.title()
 
 
 class Notification(models.Model):

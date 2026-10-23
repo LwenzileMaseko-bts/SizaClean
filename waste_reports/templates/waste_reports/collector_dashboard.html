@@ -134,14 +134,13 @@
 
         .report-actions { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
         .report-actions > * { margin-top: 20px; }
-        .action-section button, .directions {
+        .action-section button {
             display: inline-block; padding: 12px 20px; border-radius: 12px;
             font: inherit; font-weight: 600; cursor: pointer;
             transition: transform .15s;
         }
         .action-section button { border: none; background: var(--forest); color: #fff; }
-        .action-section button:hover, .directions:hover { transform: translateY(-2px); }
-        .directions { border: 1.5px solid var(--forest); color: var(--forest); background: transparent; }
+        .action-section button:hover { transform: translateY(-2px); }
 
         .empty-message {
             background: #fff; border: 1.5px solid var(--line);
@@ -155,10 +154,10 @@
             .container { padding-top: 28px; }
             #reports-map { height: 300px; }
             .details div { grid-template-columns: 1fr; gap: 0; }
-            .action-section, .action-section button, .directions { width: 100%; text-align: center; }
+            .action-section, .action-section button { width: 100%; text-align: center; }
         }
         @media (prefers-reduced-motion: reduce) {
-            .action-section button, .directions { transition: none; }
+            .action-section button { transition: none; }
         }
     </style>
 </head>
@@ -307,15 +306,6 @@
 
                         {% endif %}
 
-                        {% if report.latitude is not None and report.longitude is not None %}
-                            <a class="directions"
-                               href="https://www.google.com/maps/dir/?api=1&destination={{ report.latitude }},{{ report.longitude }}"
-                               target="_blank"
-                               rel="noopener">
-                                Get directions
-                            </a>
-                        {% endif %}
-
                     </div>
 
                 </article>
@@ -440,4 +430,3 @@
 
 </body>
 </html>
-

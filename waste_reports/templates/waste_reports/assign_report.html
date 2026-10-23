@@ -6,318 +6,323 @@
 
     <title>Assign Waste Report | SizaClean</title>
 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700;800&family=Figtree:wght@400;600&display=swap" rel="stylesheet">
+
     <style>
-        * {
-            box-sizing: border-box;
+        :root {
+            --ink: #10231c;
+            --forest: #14392e;
+            --hivis: #d4ee3c;
+            --mist: #eef2ef;
+            --line: #d5ddd8;
+            --muted: #4d5f57;
         }
+
+        * { box-sizing: border-box; margin: 0; }
 
         body {
-            margin: 0;
-            font-family: Arial, Helvetica, sans-serif;
-            background: #f4f8f5;
-            color: #1f2933;
+            font-family: "Figtree", system-ui, sans-serif;
+            background: var(--mist);
+            color: var(--ink);
+            line-height: 1.5;
         }
 
-        .page {
-            min-height: 100vh;
-            padding: 40px 20px;
+        a { color: inherit; text-decoration: none; }
+        a:focus-visible, button:focus-visible { outline: 3px solid var(--forest); outline-offset: 3px; }
+
+        /* Top bar */
+
+        .bar { background: var(--forest); color: #fff; }
+
+        .bar-inner {
+            max-width: 1080px; margin: 0 auto; padding: 14px 24px;
+            display: flex; align-items: center; gap: 24px 32px; flex-wrap: wrap;
         }
 
-        .container {
-            max-width: 850px;
-            margin: 0 auto;
+        .brand { display: flex; align-items: center; gap: 12px; margin-right: auto; }
+        .brand svg { width: 34px; height: 34px; flex-shrink: 0; }
+
+        .brand b {
+            font-family: "Bricolage Grotesque", sans-serif;
+            font-size: 1.35rem; font-weight: 800; letter-spacing: -.01em;
+            display: block; line-height: 1.1;
         }
 
-        /* Header */
+        .brand span { font-size: .78rem; color: #a9c2b6; }
 
-        .header {
-            background: #176b3a;
-            color: white;
-            border-radius: 16px;
-            padding: 25px 30px;
-            margin-bottom: 25px;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+        nav { display: flex; gap: 4px; flex-wrap: wrap; }
+
+        nav a {
+            padding: 8px 14px; border-radius: 8px;
+            font-weight: 600; font-size: .95rem; color: #cfe0d7;
         }
 
-        .brand {
-            font-size: 28px;
-            font-weight: bold;
+        nav a:hover { background: rgba(255,255,255,.1); color: #fff; }
+
+        .logout {
+            font-weight: 600; font-size: .95rem; padding: 8px 14px;
+            border: 1.5px solid #4c7365; border-radius: 8px; color: #cfe0d7;
         }
 
-        .subtitle {
-            margin-top: 6px;
-            font-size: 14px;
-            opacity: 0.9;
+        .logout:hover { border-color: #fff; color: #fff; }
+
+        /* Page */
+
+        .container { max-width: 1080px; margin: 0 auto; padding: 40px 24px 24px; }
+        .content { max-width: 780px; }
+
+        .page-head { margin-bottom: 28px; }
+
+        .page-head h1 {
+            font-family: "Bricolage Grotesque", sans-serif;
+            font-size: clamp(2rem, 4.5vw, 2.8rem); font-weight: 800;
+            letter-spacing: -.025em; line-height: 1.1; margin-bottom: 10px;
         }
 
-        .tagline {
-            margin-top: 8px;
-            font-size: 13px;
-            font-weight: bold;
-        }
-
-        /* Main card */
+        .page-head p { color: var(--muted); font-size: 1.05rem; }
 
         .card {
-            background: white;
-            border-radius: 16px;
+            background: #fff;
+            border: 1.5px solid var(--line);
+            border-radius: 20px;
             padding: 32px;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.07);
             margin-bottom: 20px;
-        }
-
-        .card h1 {
-            margin-top: 0;
-            margin-bottom: 8px;
-            color: #176b3a;
-            font-size: 28px;
-        }
-
-        .card-intro {
-            color: #667085;
-            margin-bottom: 25px;
-            font-size: 14px;
         }
 
         /* Report information */
 
         .report-info {
-            background: #f7faf8;
-            border: 1px solid #e2e8e4;
-            border-radius: 12px;
+            background: var(--mist);
+            border-radius: 14px;
             padding: 22px;
             margin-bottom: 28px;
         }
 
+        .report-head {
+            display: flex; align-items: center; justify-content: space-between;
+            gap: 12px; flex-wrap: wrap; margin-bottom: 16px;
+        }
+
         .report-title {
-            margin-top: 0;
-            margin-bottom: 18px;
-            color: #176b3a;
-            font-size: 21px;
+            font-family: "Bricolage Grotesque", sans-serif;
+            font-size: 1.35rem; font-weight: 700; letter-spacing: -.01em;
         }
 
-        .info-row {
-            margin-bottom: 13px;
-            line-height: 1.5;
-        }
-
-        .info-row:last-child {
-            margin-bottom: 0;
-        }
-
-        .label {
-            font-weight: bold;
-            color: #344054;
-        }
-
-        .status {
+        .badge {
             display: inline-block;
-            background: #fff4cc;
-            color: #8a6500;
-            padding: 5px 11px;
-            border-radius: 20px;
-            font-size: 13px;
-            font-weight: bold;
+            font-size: .82rem; font-weight: 600;
+            padding: 4px 12px; border-radius: 999px;
+            white-space: nowrap;
         }
+
+        .badge-pending { background: #dde3e0; color: #3d4f47; }
+        .badge-assigned { background: #fdecc8; color: #6b4300; }
+        .badge-in_progress { background: var(--hivis); color: var(--ink); }
+        .badge-resolved { background: #dfeee6; color: var(--forest); }
+
+        .details { display: grid; gap: 10px; }
+        .details div { display: grid; grid-template-columns: 120px 1fr; gap: 12px; }
+        .details dt { color: var(--muted); font-size: .92rem; }
+        .details dd { margin: 0; overflow-wrap: anywhere; }
+
+        .details a { color: var(--forest); font-weight: 600; text-decoration: underline; }
 
         /* Assignment section */
 
-        .assignment-section {
-            border-top: 1px solid #e5e7eb;
-            padding-top: 25px;
-        }
-
         .assignment-section h2 {
-            margin-top: 0;
-            color: #176b3a;
-            font-size: 21px;
+            font-family: "Bricolage Grotesque", sans-serif;
+            font-size: 1.35rem; font-weight: 700; letter-spacing: -.01em;
+            margin-bottom: 6px;
         }
 
-        .assignment-section p {
-            color: #667085;
-            font-size: 14px;
+        .assignment-section > p {
+            color: var(--muted);
             margin-bottom: 20px;
         }
 
-        .form-group {
-            margin-bottom: 20px;
-        }
+        .form-group { margin-bottom: 20px; }
 
         .form-group label {
             display: block;
             margin-bottom: 8px;
-            font-weight: bold;
-            color: #344054;
+            font-weight: 600;
         }
 
         select {
             width: 100%;
-            max-width: 500px;
-            padding: 12px 14px;
-            border: 1px solid #d0d5dd;
-            border-radius: 8px;
-            background: white;
-            font-size: 15px;
-            color: #344054;
+            padding: 13px 14px;
+            border: 1.5px solid var(--line);
+            border-radius: 12px;
+            background: #fff;
+            font: inherit;
+            color: var(--ink);
             cursor: pointer;
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
         }
 
         select:focus {
-            outline: none;
-            border-color: #176b3a;
-            box-shadow: 0 0 0 3px rgba(23, 107, 58, 0.10);
+            border-color: var(--forest);
+            box-shadow: 0 0 0 4px rgba(212, 238, 60, 0.6);
         }
 
         .assign-button {
+            width: 100%;
             border: none;
-            border-radius: 9px;
-            padding: 13px 24px;
-            background: #176b3a;
-            color: white;
-            font-size: 15px;
-            font-weight: bold;
+            border-radius: 12px;
+            padding: 14px 24px;
+            background: var(--forest);
+            color: #fff;
+            font: inherit;
+            font-weight: 600;
             cursor: pointer;
-            transition: background 0.2s, transform 0.1s;
+            transition: transform 0.15s;
         }
 
-        .assign-button:hover {
-            background: #12562f;
-        }
-
-        .assign-button:active {
-            transform: scale(0.98);
-        }
+        .assign-button:hover { transform: translateY(-2px); }
 
         /* Error message */
 
         .error {
-            background: #fff1f0;
-            border-left: 4px solid #d92d20;
-            color: #b42318;
-            padding: 13px 15px;
-            border-radius: 8px;
+            background: #fff1f1;
+            border-left: 6px solid #e0aaaa;
+            color: #8b3030;
+            padding: 13px 16px;
+            border-radius: 12px;
             margin-bottom: 20px;
-            font-size: 14px;
+            font-size: .95rem;
         }
 
-        /* Back button */
+        /* Back link */
 
         .back-link {
             display: inline-block;
-            margin-top: 5px;
-            color: #176b3a;
-            text-decoration: none;
-            font-weight: bold;
-            font-size: 14px;
+            color: var(--forest);
+            font-weight: 600;
         }
 
-        .back-link:hover {
-            text-decoration: underline;
-        }
-
-        /* Footer */
+        .back-link:hover { text-decoration: underline; }
 
         .footer {
-            text-align: center;
-            color: #98a2b3;
-            font-size: 12px;
-            padding: 10px;
+            max-width: 1080px; margin: 0 auto; padding: 32px 24px 48px;
+            color: #6b7d75; font-size: .9rem;
+        }
+
+        .footer strong {
+            color: var(--forest);
+            font-family: "Bricolage Grotesque", sans-serif; font-size: 1.05rem;
         }
 
         @media (max-width: 600px) {
-            .page {
-                padding: 20px 12px;
-            }
+            .container { padding-top: 28px; }
+            .card { padding: 22px 20px; }
+            .report-info { padding: 18px; }
+            .details div { grid-template-columns: 1fr; gap: 0; }
+        }
 
-            .header {
-                padding: 22px;
-            }
-
-            .card {
-                padding: 22px;
-            }
-
-            .brand {
-                font-size: 24px;
-            }
-
-            .card h1 {
-                font-size: 24px;
-            }
+        @media (prefers-reduced-motion: reduce) {
+            .assign-button { transition: none; }
         }
     </style>
 </head>
 
 <body>
 
-<div class="page">
+<!-- Top bar -->
 
-    <div class="container">
+<header class="bar">
 
-        <!-- Header -->
+    <div class="bar-inner">
 
-        <div class="header">
-            <div class="brand">♻️ SizaClean</div>
+        <a class="brand" href="{% url 'home' %}">
 
-            <div class="subtitle">
-                Smart Waste Reporting &amp; Management System
+            <svg viewBox="0 0 40 40" fill="none" stroke="#d4ee3c" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M14 9l5-5 6 9M26 7l9 14-8 1M32 31l-6 5-9-3M13 36L5 22l8-1M8 14l6-5M30 28l2 4"/>
+            </svg>
+
+            <div>
+                <b>SizaClean</b>
+                <span>Smart Waste Reporting &amp; Management System</span>
             </div>
 
-            <div class="tagline">
-                Report. Track. Clean.
-            </div>
+        </a>
+
+        <nav aria-label="Main">
+            <a href="{% url 'home' %}">Home</a>
+            <a href="{% url 'authority_dashboard' %}">Authority Dashboard</a>
+            <a href="{% url 'notifications' %}">Notifications</a>
+        </nav>
+
+        <a class="logout" href="{% url 'logout' %}">Logout</a>
+
+    </div>
+
+</header>
+
+<div class="container">
+
+    <div class="content">
+
+        <div class="page-head">
+
+            <h1>Assign Waste Report</h1>
+
+            <p>
+                Review the waste report details and assign it to a Waste Collector.
+            </p>
+
         </div>
 
         <!-- Main Card -->
 
         <div class="card">
 
-            <h1>📋 Assign Waste Report</h1>
-
-            <p class="card-intro">
-                Review the waste report details and assign it to a Waste Collector.
-            </p>
-
             <!-- Report Details -->
 
             <div class="report-info">
 
-                <h2 class="report-title">
-                    {{ report.get_problem_type_display }}
-                </h2>
+                <div class="report-head">
 
-                <div class="info-row">
-                    <span class="label">👤 Resident:</span>
-                    {{ report.resident.username }}
-                </div>
+                    <h2 class="report-title">
+                        {{ report.get_problem_type_display }}
+                    </h2>
 
-                <div class="info-row">
-                    <span class="label">📍 Location:</span>
-                    {{ report.location }}
-                </div>
-
-                <div class="info-row">
-                    <span class="label">📝 Description:</span>
-                    {{ report.description }}
-                </div>
-
-                <div class="info-row">
-                    <span class="label">📊 Current Status:</span>
-
-                    <span class="status">
+                    <span class="status badge badge-{{ report.status }}">
                         {{ report.get_status_display }}
                     </span>
+
                 </div>
 
-                {% if report.photo %}
-                <div class="info-row">
-                    <span class="label">📷 Photo:</span>
+                <dl class="details">
 
-                    <a href="{{ report.photo.url }}" target="_blank">
-                        View Report Photo
-                    </a>
-                </div>
-                {% endif %}
+                    <div>
+                        <dt>Resident</dt>
+                        <dd>{{ report.resident.username }}</dd>
+                    </div>
+
+                    <div>
+                        <dt>Location</dt>
+                        <dd>{{ report.location }}</dd>
+                    </div>
+
+                    <div>
+                        <dt>Description</dt>
+                        <dd>{{ report.description }}</dd>
+                    </div>
+
+                    {% if report.photo %}
+                    <div>
+                        <dt>Photo</dt>
+                        <dd>
+                            <a href="{{ report.photo.url }}" target="_blank">
+                                View Report Photo
+                            </a>
+                        </dd>
+                    </div>
+                    {% endif %}
+
+                </dl>
 
             </div>
 
@@ -325,7 +330,7 @@
 
             <div class="assignment-section">
 
-                <h2>🚛 Select a Waste Collector</h2>
+                <h2>Select a Waste Collector</h2>
 
                 <p>
                     Choose the Waste Collector responsible for handling this report.
@@ -333,7 +338,7 @@
 
                 {% if error %}
                 <div class="error">
-                    ⚠️ {{ error }}
+                    {{ error }}
                 </div>
                 {% endif %}
 
@@ -366,7 +371,7 @@
                     </div>
 
                     <button type="submit" class="assign-button">
-                        🚛 Assign Report
+                        Assign Report
                     </button>
 
                 </form>
@@ -379,13 +384,15 @@
             ← Back to Authority Dashboard
         </a>
 
-        <div class="footer">
-            ♻️ SizaClean — Report. Track. Clean.
-        </div>
-
     </div>
 
 </div>
+
+<footer class="footer">
+    <strong>SizaClean</strong><br>
+    Smart Waste Reporting &amp; Management System<br>
+    Report. Track. Clean.
+</footer>
 
 </body>
 </html>
